@@ -1,17 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class Enemy_AI : MonoBehaviour
+public class Mob_IA : MonoBehaviour
 {
     [SerializeField]
     bool chegou_Destino = true;
     Vector3 destino;
     bool xablau = false;
-    public GameObject rangeAREA;
     Vector3 AreaOriginal;
     public int range;
     public float runSpeed;
@@ -21,8 +17,8 @@ public class Enemy_AI : MonoBehaviour
     public bool atk;
     SphereCollider bola;
 
-    bool alvoPlayer = false;
-    bool vigiarZona = true;
+    bool alvo_Hunter = false;
+    bool rondar_Zona = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -42,12 +38,12 @@ public class Enemy_AI : MonoBehaviour
             return;
         }
 
-        if (vigiarZona)
+        if (rondar_Zona)
         {
             Vigia();
         }
 
-        if (alvoPlayer)
+        if (alvo_Hunter)
         {
             Cacador();
         }
@@ -89,22 +85,22 @@ public class Enemy_AI : MonoBehaviour
 
     void Cacador()
     {
-        vigiarZona = false; 
+        rondar_Zona = false; 
         if (chegou_Destino == false)
         {
             transform.LookAt(destino);
             transform.position = Vector3.MoveTowards(transform.position, destino, runSpeed);
-            ani.SetInteger("CTRLgeral", 1);
+            // ani.SetInteger("CTRLgeral", 1);
         }
     }
 
     private void OnTriggerStay(Collider collision)
     {
-        if (collision.gameObject.tag == "Mob")
+        if (collision.gameObject.tag == "Hunter")
         {
             xablau = true;
             chegou_Destino = false;
-            alvoPlayer = true;
+            alvo_Hunter = true;
             destino = collision.gameObject.transform.position;
             
         }
@@ -112,12 +108,12 @@ public class Enemy_AI : MonoBehaviour
 
     private void OnTriggerExit(Collider collision)
     {
-        if (collision.gameObject.tag == "Mob")
+        if (collision.gameObject.tag == "Hunter")
         {
             xablau = false;
             chegou_Destino = true;
-            alvoPlayer = false;
-            vigiarZona = true;
+            alvo_Hunter = false;
+            rondar_Zona = true;
         }
     }
 
