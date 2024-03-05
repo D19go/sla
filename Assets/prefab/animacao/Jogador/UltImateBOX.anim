@@ -3703,21 +3703,7 @@ AnimationClip:
   m_HasGenericRootTransform: 1
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.4
-    functionName: 
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.6666667
-    functionName: 
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.81666666
+  - time: 0.8333333
     functionName: FimGolpe
     data: 
     objectReferenceParameter: {fileID: 11500000, guid: b9335b530b1e368459e8628275e5fe6f, type: 3}

@@ -11,7 +11,6 @@ public class Enemy_AI : MonoBehaviour
     bool chegou_Destino = true;
     Vector3 destino;
     bool xablau = false;
-    public GameObject rangeAREA;
     Vector3 AreaOriginal;
     public int range;
     public float runSpeed;

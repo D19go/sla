@@ -7,7 +7,6 @@ public class PlayerCombo : MonoBehaviour
     bool CanATK = true;
     int aniClick = 0;
     public Animator ani;
-    public int vida = 200;
     GameObject areaDano;
     // Start is called before the first frame update
     void Start()
@@ -62,12 +61,5 @@ public class PlayerCombo : MonoBehaviour
         ani.SetInteger("BOX", 0);
     }
 
-    public void Golpe(int dano)
-    {
-        vida -= dano;
-        if (vida <= 0)
-        {
-            Destroy(gameObject);
-        }
-    }
+    
 }
