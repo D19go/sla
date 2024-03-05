@@ -63,19 +63,19 @@ public class Enemy_AI : MonoBehaviour
             float posicaoZ = Random.Range(AreaOriginal.z - range, AreaOriginal.z + range);
             destino = new Vector3(posicaoX, transform.position.y, posicaoZ);
             chegou_Destino = false;
-            ani.SetInteger("CTRLgeral", 0);
+            // ani.SetInteger("CTRLgeral", 0);
         }
 
         if (chegou_Destino == false)
         {
             transform.LookAt(destino);
             transform.position = Vector3.MoveTowards(transform.position, destino, runSpeed);
-            ani.SetInteger("CTRLgeral", 1);
+            // ani.SetInteger("CTRLgeral", 1);
         }
         if (Vector3.Distance(transform.position, destino) < 0.5f)
         {
             xablau = true;
-            ani.SetInteger("CTRLgeral", 0);
+            // ani.SetInteger("CTRLgeral", 0);
             Invoke("esperar", 2f);
         }
 
@@ -99,7 +99,7 @@ public class Enemy_AI : MonoBehaviour
 
     private void OnTriggerStay(Collider collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Mob")
         {
             xablau = true;
             chegou_Destino = false;
@@ -111,7 +111,7 @@ public class Enemy_AI : MonoBehaviour
 
     private void OnTriggerExit(Collider collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Mob")
         {
             xablau = false;
             chegou_Destino = true;

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Inimigo
   - Chao
+  - Mob
+  - Hunter
   layers:
   - Default
   - TransparentFX

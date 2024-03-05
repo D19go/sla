@@ -5,9 +5,9 @@ using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public static CharacterController cc;//Variável para definição do CharacterController para cc
-    public static float speed = 49;//Variável flutuável para definição da velocidade
-    public static float gravidade = 10;//Variável flutuável para definição da gravidade
+    public static CharacterController cc;//Variï¿½vel para definiï¿½ï¿½o do CharacterController para cc
+    public static float speed = 49;//Variï¿½vel flutuï¿½vel para definiï¿½ï¿½o da velocidade
+    public static float gravidade = 10;//Variï¿½vel flutuï¿½vel para definiï¿½ï¿½o da gravidade
 
     void Start()
     {
@@ -16,32 +16,32 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        //Variáveis criadas para definição efetiva do movimento tendo em vista os controles usados aplicados a velocidade ou gravidade
+        //Variï¿½veis criadas para definiï¿½ï¿½o efetiva do movimento tendo em vista os controles usados aplicados a velocidade ou gravidade
         //multiplicado pelo tempo local
         float direcaoX = InputController.inputHorizontal * speed * Time.deltaTime;
         float direcaoZ = InputController.inputVertical * speed * Time.deltaTime;
         float direcaoY = -gravidade * Time.deltaTime;
 
-        //Condição para verificação do Estado do pulo se Pulando,
-        //caso verificada condição será aplicada força na direçao Y através da função SmoothStep(Suavidade de movimento)
-        //que tem como atributos o valor mínimo, máximo, pelo tempo indicado
+        //Condiï¿½ï¿½o para verificaï¿½ï¿½o do Estado do pulo se Pulando,
+        //caso verificada condiï¿½ï¿½o serï¿½ aplicada forï¿½a na direï¿½ao Y atravï¿½s da funï¿½ï¿½o SmoothStep(Suavidade de movimento)
+        //que tem como atributos o valor mï¿½nimo, mï¿½ximo, pelo tempo indicado
         if (PlayerJump.estadoPulo == EstadoPulo.Pulando)
         {
-                direcaoY = (Mathf.SmoothStep(gravidade, gravidade * 1.1f, PlayerJump.tempoDecorridoPulo / PlayerJump.tempoPulo));
-                direcaoY = direcaoY * Time.deltaTime;
+            direcaoY = (Mathf.SmoothStep(gravidade, gravidade * 9.28f, PlayerJump.tempoDecorridoPulo / PlayerJump.tempoPulo));
+            direcaoY = direcaoY * Time.deltaTime;
             
         }
 
-        //Condição para verificação do Estado do pulo se Caindo,
-        //caso verificada condição será aplicada força na direçao Y através da função REVERSA ACIMA SmoothStep(Suavidade de movimento)
-        //que tem como atributos o valor mínimo, máximo, pelo tempo indicado
+        //Condiï¿½ï¿½o para verificaï¿½ï¿½o do Estado do pulo se Caindo,
+        //caso verificada condiï¿½ï¿½o serï¿½ aplicada forï¿½a na direï¿½ao Y atravï¿½s da funï¿½ï¿½o REVERSA ACIMA SmoothStep(Suavidade de movimento)
+        //que tem como atributos o valor mï¿½nimo, mï¿½ximo, pelo tempo indicado
         if (PlayerJump.estadoPulo == EstadoPulo.Caindo)
         {
             direcaoY = (Mathf.SmoothStep(-gravidade * 0.9f, -gravidade * 1.5f, PlayerJump.tempoDecorridoPulo / PlayerJump.tempoPulo));
             direcaoY = direcaoY * Time.deltaTime;
         }
 
-        //Rotação do personagem
+        //Rotaï¿½ï¿½o do personagem
         Vector3 frente = Camera.main.transform.forward;
         Vector3 direita = Camera.main.transform.right;
 
@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
 
         frente *= direcaoZ;
         direita *= direcaoX;
-        //manter a posição olhando para a última posição
+        //manter a posiï¿½ï¿½o olhando para a ï¿½ltima posiï¿½ï¿½o
         if (direcaoX != 0 && direcaoZ != 0)
         {
             float angulo = Mathf.Atan2(frente.x + direita.x, frente.z + direita.z) * Mathf.Rad2Deg;
@@ -66,9 +66,9 @@ public class PlayerMovement : MonoBehaviour
         Vector3 direcao_horizontal = frente + direita;
 
 
-        //Linha para definição do movimento de acordo com variáveis acionadas através dos controles utilizados
+        //Linha para definiï¿½ï¿½o do movimento de acordo com variï¿½veis acionadas atravï¿½s dos controles utilizados
         Vector3 movimento = direcao_vertical + direcao_horizontal;
-        //Por fim, a aplicação do movimento definido acima
+        //Por fim, a aplicaï¿½ï¿½o do movimento definido acima
         cc.Move(movimento * speed * Time.deltaTime);
     }
 }
