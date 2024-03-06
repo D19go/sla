@@ -93,7 +93,7 @@ public class Enemy_AI : MonoBehaviour
         {
             transform.LookAt(destino);
             transform.position = Vector3.MoveTowards(transform.position, destino, runSpeed);
-            ani.SetInteger("CTRLgeral", 1);
+            // ani.SetInteger("CTRLgeral", 1);
         }
     }
 
