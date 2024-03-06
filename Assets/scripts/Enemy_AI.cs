@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using TreeEditor;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -36,6 +37,7 @@ public class Enemy_AI : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        transform.Rotate(0, transform.rotation.y, 0);
         if (atk)
         {
             return;
@@ -94,7 +96,9 @@ public class Enemy_AI : MonoBehaviour
             transform.LookAt(destino);
             transform.position = Vector3.MoveTowards(transform.position, destino, runSpeed);
             // ani.SetInteger("CTRLgeral", 1);
+            
         }
+        
     }
 
     private void OnTriggerStay(Collider collision)
@@ -117,6 +121,7 @@ public class Enemy_AI : MonoBehaviour
             chegou_Destino = true;
             alvoPlayer = false;
             vigiarZona = true;
+            runSpeed = 0.2f;
         }
     }
 
@@ -126,6 +131,14 @@ public class Enemy_AI : MonoBehaviour
         if (collision.gameObject.tag != "Chao")
         {
             chegou_Destino = true;
+        }
+
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Mob")
+        {
+            collision.gameObject.GetComponent<Capturado>().pego();
         }
 
     }
