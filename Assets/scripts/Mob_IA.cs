@@ -85,13 +85,8 @@ public class Mob_IA : MonoBehaviour
 
     void Cacador()
     {
-        rondar_Zona = false; 
-        if (chegou_Destino == false)
-        {
-            transform.LookAt(destino);
-            transform.position = Vector3.MoveTowards(transform.position, destino, runSpeed);
-            // ani.SetInteger("CTRLgeral", 1);
-        }
+        rondar_Zona = false;
+        runSpeed += 0.2f;
     }
 
     private void OnTriggerStay(Collider collision)
