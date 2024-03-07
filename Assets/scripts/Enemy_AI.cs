@@ -11,13 +11,14 @@ public class Enemy_AI : MonoBehaviour
     [SerializeField]
     bool chegou_Destino = true;
     Vector3 destino;
+    Vector3 alvo_Mob;
     bool xablau = false;
     Vector3 AreaOriginal;
     public int range;
     public float runSpeed;
     Rigidbody rb;
     Animator ani;
-
+    bool rotacao = true;
     public bool atk;
     SphereCollider bola;
 
@@ -30,14 +31,18 @@ public class Enemy_AI : MonoBehaviour
         ani = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         destino = Vector3.zero;
+        alvo_Mob = Vector3.zero;
         chegou_Destino = true;
         AreaOriginal = transform.position;
     }
 
+
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.Rotate(0, transform.rotation.y, 0);
+        if(rotacao){
+            transform.Rotate(0, transform.rotation.y, 0);
+        }
         if (atk)
         {
             return;
@@ -57,9 +62,7 @@ public class Enemy_AI : MonoBehaviour
     }
     void Vigia()
     {
-        if (xablau)
-            return;
-        if (chegou_Destino == true)
+        if (chegou_Destino == true && alvoPlayer)
         {
             float posicaoX = Random.Range(AreaOriginal.x - range, AreaOriginal.x + range);
             float posicaoZ = Random.Range(AreaOriginal.z - range, AreaOriginal.z + range);
@@ -68,17 +71,17 @@ public class Enemy_AI : MonoBehaviour
             // ani.SetInteger("CTRLgeral", 0);
         }
 
-        if (chegou_Destino == false)
+        if (chegou_Destino == false && alvoPlayer)
         {
             transform.LookAt(destino);
             transform.position = Vector3.MoveTowards(transform.position, destino, runSpeed);
             // ani.SetInteger("CTRLgeral", 1);
         }
-        if (Vector3.Distance(transform.position, destino) < 0.5f)
+        if (Vector3.Distance(transform.position, destino) < 1f)
         {
             xablau = true;
             // ani.SetInteger("CTRLgeral", 0);
-            Invoke("esperar", 2f);
+            Invoke("esperar", 1f);
         }
 
     }
@@ -91,10 +94,10 @@ public class Enemy_AI : MonoBehaviour
     void Cacador()
     {
         vigiarZona = false; 
-        if (chegou_Destino == false)
+        if (alvoPlayer)
         {
-            transform.LookAt(destino);
-            transform.position = Vector3.MoveTowards(transform.position, destino, runSpeed);
+            transform.LookAt(alvo_Mob);
+            transform.position = Vector3.MoveTowards(transform.position, alvo_Mob, runSpeed);
             // ani.SetInteger("CTRLgeral", 1);
             
         }
@@ -108,7 +111,7 @@ public class Enemy_AI : MonoBehaviour
             xablau = true;
             chegou_Destino = false;
             alvoPlayer = true;
-            destino = collision.gameObject.transform.position;
+            alvo_Mob = collision.gameObject.transform.position;
             
         }
     }
@@ -117,11 +120,10 @@ public class Enemy_AI : MonoBehaviour
     {
         if (collision.gameObject.tag == "Mob")
         {
+            vigiarZona = true;
             xablau = false;
             chegou_Destino = true;
             alvoPlayer = false;
-            vigiarZona = true;
-            runSpeed = 0.2f;
         }
     }
 
@@ -131,6 +133,7 @@ public class Enemy_AI : MonoBehaviour
         if (collision.gameObject.tag != "Chao")
         {
             chegou_Destino = true;
+            Vigia();
         }
 
     }
