@@ -12,6 +12,12 @@ public class Spawn : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for(int i = 0; i < 55; i++){
+            int num = Random.Range(0, 11);
+            total = 1;
+            SpawnEnemy(inimigo[num]);
+        }
+        
 
     }
 
@@ -24,12 +30,10 @@ public class Spawn : MonoBehaviour
         
         }
 
-        if (total >= 5)  // Alterado para gerar 9 inimigos no total
+        if (total >= 1)  // Alterado para gerar 9 inimigos no total
         {
             // timeSpanw();
-            int num = Random.Range(0, 11);
             
-            SpawnEnemy(inimigo[num]);
             Wave += 1;
             total = 0;
         }
@@ -37,22 +41,16 @@ public class Spawn : MonoBehaviour
     }
     void SpawnEnemy(GameObject enemyPrefab)
     {
-        if(total >= 1){
-
+        if(total == 1){
             // Instancie o inimigo
             GameObject newEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
 
             // Ajuste as coordenadas de deslocamento
-            float offsetX = Random.Range(-40f, 40f); // Altere conforme necessário
-            float offsetZ = Random.Range(-40f, 40f); // Altere conforme necessário
-
+            float offsetX = Random.Range(-160f, 160f); // Altere conforme necessário
+            float offsetZ = Random.Range(-160f, 160f); // Altere conforme necessário
             newEnemy.transform.position = new Vector3(offsetX, 1, offsetZ);
-
-            // Adicione a força
-            newEnemy.GetComponent<Rigidbody>().AddForce(Vector3.up * 20000);
+            total = 0;
         }
-
-        
     }
 
     public void Quantos(int menos1)

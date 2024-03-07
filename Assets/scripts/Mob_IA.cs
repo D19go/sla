@@ -9,7 +9,7 @@ public class Mob_IA : MonoBehaviour
     Vector3 destino;
     bool xablau = false;
     Vector3 AreaOriginal;
-    public int range;
+    int range = 160;
     public float runSpeed;
     Rigidbody rb;
     Animator ani;
@@ -27,7 +27,7 @@ public class Mob_IA : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         destino = Vector3.zero;
         chegou_Destino = true;
-        AreaOriginal = transform.position;
+        AreaOriginal = new Vector3(0,0,0);
     }
 
     // Update is called once per frame

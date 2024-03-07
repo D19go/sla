@@ -11,10 +11,9 @@ public class Enemy_AI : MonoBehaviour
     [SerializeField]
     bool chegou_Destino = true;
     Vector3 destino;
-    Vector3 alvo_Mob;
-    bool xablau = false;
+    Vector3 alvo_Mob;   
     Vector3 AreaOriginal;
-    public int range;
+    int range = 160;
     public float runSpeed;
     Rigidbody rb;
     Animator ani;
@@ -33,7 +32,7 @@ public class Enemy_AI : MonoBehaviour
         destino = Vector3.zero;
         alvo_Mob = Vector3.zero;
         chegou_Destino = true;
-        AreaOriginal = transform.position;
+        AreaOriginal = new Vector3(0,transform.position.y,0);
     }
 
 
@@ -41,7 +40,7 @@ public class Enemy_AI : MonoBehaviour
     void FixedUpdate()
     {
         if(rotacao){
-            transform.Rotate(0, transform.rotation.y, 0);
+            transform.Rotate(0, 0, 0);
         }
         if (atk)
         {
@@ -62,7 +61,7 @@ public class Enemy_AI : MonoBehaviour
     }
     void Vigia()
     {
-        if (chegou_Destino == true && alvoPlayer)
+        if (chegou_Destino == true && alvoPlayer == false)
         {
             float posicaoX = Random.Range(AreaOriginal.x - range, AreaOriginal.x + range);
             float posicaoZ = Random.Range(AreaOriginal.z - range, AreaOriginal.z + range);
@@ -71,7 +70,7 @@ public class Enemy_AI : MonoBehaviour
             // ani.SetInteger("CTRLgeral", 0);
         }
 
-        if (chegou_Destino == false && alvoPlayer)
+        if (chegou_Destino == false && alvoPlayer == false)
         {
             transform.LookAt(destino);
             transform.position = Vector3.MoveTowards(transform.position, destino, runSpeed);
@@ -79,7 +78,6 @@ public class Enemy_AI : MonoBehaviour
         }
         if (Vector3.Distance(transform.position, destino) < 1f)
         {
-            xablau = true;
             // ani.SetInteger("CTRLgeral", 0);
             Invoke("esperar", 1f);
         }
@@ -88,7 +86,6 @@ public class Enemy_AI : MonoBehaviour
     void esperar()
     {
         chegou_Destino = true;
-        xablau = false;
     }
 
     void Cacador()
@@ -108,7 +105,6 @@ public class Enemy_AI : MonoBehaviour
     {
         if (collision.gameObject.tag == "Mob")
         {
-            xablau = true;
             chegou_Destino = false;
             alvoPlayer = true;
             alvo_Mob = collision.gameObject.transform.position;
@@ -121,7 +117,6 @@ public class Enemy_AI : MonoBehaviour
         if (collision.gameObject.tag == "Mob")
         {
             vigiarZona = true;
-            xablau = false;
             chegou_Destino = true;
             alvoPlayer = false;
         }

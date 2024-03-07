@@ -4,41 +4,37 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private const float Y_ANGLE_MIN = -90.0f;
-    private const float Y_ANGLE_MAX = 90.0f;
 
-    public Transform lookAt;
-    public Transform camTransform;
-    public float distance = 5.0f;
-    public float heightOffset = 1.0f;
+    Transform jogador;
 
-    private float currentX = 0.0f;
-    private float currentY = 0f;
+    public float sensibilidade = 5f;
 
-    private void Start()
+    float mouseX;
+    float mouseY;
+
+    // Start is called before the first frame update
+    void Start()
     {
-        camTransform = transform;
+
+        jogador = GameObject.FindWithTag("Player").transform;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
     }
 
-    private void Update()
+    // Update is called once per frame
+    void Update()
     {
-            currentX += Input.GetAxis("Mouse X");
-            currentY -= Input.GetAxis("Mouse Y");
 
-            currentY = Mathf.Clamp(currentY, Y_ANGLE_MIN, Y_ANGLE_MAX);
-        
-    }
-        
-    
+        transform.position = jogador.position - new Vector3(0, -1, 0);    
 
-    private void LateUpdate()
-    {
-            Vector3 dir = new Vector3(0, heightOffset, -distance);
-            Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
-            camTransform.position = lookAt.position + rotation * dir;
-            camTransform.LookAt(lookAt.position + Vector3.up * heightOffset);
-   
+        mouseX += Input.GetAxis("Mouse X") * sensibilidade;
+        mouseY += Input.GetAxis("Mouse Y") * sensibilidade;
+
+        mouseY = Mathf.Clamp( mouseY, -90f, 90f );
+
+        transform.rotation = Quaternion.Euler( -mouseY, mouseX, 0 );
+
     }
 }

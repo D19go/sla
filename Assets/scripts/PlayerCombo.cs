@@ -19,7 +19,7 @@ public class PlayerCombo : MonoBehaviour
     void Update()
     {
        
-        if (InputController.inputPrincipal && CanATK)
+        if (InputController.inputAcaoPrincipal && CanATK)
         {
             RealizaGolpe();
         }

@@ -12,7 +12,6 @@ public class Capturado : MonoBehaviour
         spawner = GameObject.FindGameObjectWithTag("spawn");
     }
     public void pego(){
-        spawner.GetComponent<Spawn>().Quantos(1);
         Destroy(gameObject);
 
     }
