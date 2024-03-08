@@ -20,6 +20,7 @@ public class Enemy_AI : MonoBehaviour
     bool rotacao = true;
     public bool atk;
     SphereCollider bola;
+    public int life = 100;
 
     bool alvoPlayer = false;
     bool vigiarZona = true;
@@ -39,6 +40,10 @@ public class Enemy_AI : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (transform.position.y <= -2)
+        {
+            transform.position = new Vector3(transform.position.x,2,transform.position.z);
+        }
         if(rotacao){
             transform.Rotate(0, 0, 0);
         }
@@ -67,18 +72,18 @@ public class Enemy_AI : MonoBehaviour
             float posicaoZ = Random.Range(AreaOriginal.z - range, AreaOriginal.z + range);
             destino = new Vector3(posicaoX, transform.position.y, posicaoZ);
             chegou_Destino = false;
-            // ani.SetInteger("CTRLgeral", 0);
+            ani.SetInteger("CTRLgeral", 0);
         }
 
         if (chegou_Destino == false && alvoPlayer == false)
         {
             transform.LookAt(destino);
             transform.position = Vector3.MoveTowards(transform.position, destino, runSpeed);
-            // ani.SetInteger("CTRLgeral", 1);
+            ani.SetInteger("CTRLgeral", 1);
         }
         if (Vector3.Distance(transform.position, destino) < 1f)
         {
-            // ani.SetInteger("CTRLgeral", 0);
+            ani.SetInteger("CTRLgeral", 0);
             Invoke("esperar", 1f);
         }
 
@@ -95,7 +100,7 @@ public class Enemy_AI : MonoBehaviour
         {
             transform.LookAt(alvo_Mob);
             transform.position = Vector3.MoveTowards(transform.position, alvo_Mob, runSpeed);
-            // ani.SetInteger("CTRLgeral", 1);
+            ani.SetInteger("CTRLgeral", 1);
             
         }
         
@@ -139,5 +144,14 @@ public class Enemy_AI : MonoBehaviour
             collision.gameObject.GetComponent<Capturado>().pego();
         }
 
+    }
+
+    public void Dano_Life(int i)
+    {
+        life -= i;
+        if (life <= 0)
+        {
+           Destroy(gameObject);
+        }
     }
 }
