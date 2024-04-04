@@ -4,12 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Inimigo
-  - Chao
-  - Mob
-  - Hunter
-  - spawn
-  - spawn2
+  - Coletavel
   layers:
   - Default
   - TransparentFX

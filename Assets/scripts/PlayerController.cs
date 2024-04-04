@@ -4,52 +4,30 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
-    public float velocidade = 10f;
-    public static float gravidade = 9.87f;
-
-    public static CharacterController cc;
-
-
+    public float velocidade;
+    // Start is called before the first frame update
     void Start()
     {
-        cc = GetComponent<CharacterController>();
+        
     }
 
-
+    // Update is called once per frame
     void Update()
     {
-        float direcao_x = InputController.inputHorizontal * velocidade * Time.deltaTime;
-        float direcao_z = InputController.inputVertical * velocidade * Time.deltaTime;
-        float direcao_y = -gravidade * Time.deltaTime;
+        float hori = Input.GetAxis("Horizontal");
+        float vert = Input.GetAxis("Vertical");
 
-        // Rotação do personagem
-        Vector3 frente = Camera.main.transform.forward;
-        Vector3 direita = Camera.main.transform.right;
+        Vector3 movi = new Vector3 (hori,0, vert);
+        movi = movi * velocidade * Time.deltaTime;
 
-        frente.y = 0;
-        direita.y = 0;
+        transform.Translate(movi);
+    }
 
-        frente.Normalize();
-        direita.Normalize();
-
-        frente = frente * direcao_z;
-        direita = direita * direcao_x;
-
-        if( direcao_x != 0 || direcao_z != 0)
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Coletavel")
         {
-            float angulo = Mathf.Atan2( frente.x + direita.x, frente.z + direita.z ) * Mathf.Rad2Deg;
-            Quaternion rotacao = Quaternion.Euler(0, angulo, 0);
-            //transform.rotation = rotacao;
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotacao, 0.15f);
+            Destroy(other.gameObject);
         }
-
-        Vector3 direcao_vertical = Vector3.up * direcao_y;
-        Vector3 direcao_horizontal = frente + direita;
-
-        Vector3 movimento = direcao_vertical + direcao_horizontal;
-        cc.Move(movimento);
-        
-
     }
 }
