@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
         points = GameObject.Find("pontos_Num").GetComponent<TextMeshProUGUI>();
         pontos = usuario.pontos;
         points.text = pontos.ToString();
-        InvokeRepeating("LoadSaves()",5,1);
 
     }
 
@@ -29,13 +28,10 @@ public class GameManager : MonoBehaviour
     public static void MudaPontos(int i)
     {
         pontos += i;
-
         points.text = pontos.ToString();
+        Request_Manager.pontuacao = pontos;
     }
 
-    void LoadSaves()
-    {
-        Request_Manager.AutoSave();
-    }
+    
     
 }

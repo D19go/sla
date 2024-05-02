@@ -25,7 +25,7 @@ public class Request_Manager : MonoBehaviour
     //atualizar pontos pelo usuario 
     // buscar todos os usuarios
     // primeiro parametro na web "?"; para os demais parametros é "&"
-    bool novoUsuario = false;
+    public static int  pontuacao;
     static string requestUrl;
     static string response;
 
@@ -33,7 +33,6 @@ public class Request_Manager : MonoBehaviour
 
     static string apiUrl = "https://rrilihkcbjhtognlixpk.supabase.co/rest/v1/Usuarios?";
     static string apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyaWxpaGtjYmpodG9nbmxpeHBrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTIzNDY5MjgsImV4cCI6MjAyNzkyMjkyOH0.uSUDkhBOkDpoAjfJpPUotAUZEIu3QmlowXg78qF1Db8";
-
 
 
     public static async Task<Usuario> BuscaUsuario(string nome)
@@ -62,6 +61,7 @@ public class Request_Manager : MonoBehaviour
         List<Usuario> usuarios = JsonConvert.DeserializeObject<List<Usuario>>(response);
         nomeUsuario = nome;
         
+        AutoSave();
         return usuarios[0];
 
     }
@@ -80,11 +80,15 @@ public class Request_Manager : MonoBehaviour
 
     public static async void AutoSave()
     {
-        Debug.Log("Chamou");
-        requestUrl = $"{apiUrl}nome=eq.{nomeUsuario}&apikey={apiKey}";
-        string json = $"{{ \"nome\": \"{nomeUsuario}\", \"pontos\": {GameManager.pontos} }}";
+        string requestUrl = $"{apiUrl}nome=eq.{nomeUsuario}&apikey={apiKey}";
+        string json = $"{{\"pontos\": {pontuacao} }}";
         UnityWebRequest request = UnityWebRequest.Put(requestUrl, json);
+        request.method = "PATH";
+        request.SetRequestHeader("Content-Type", "application/json");
+
         await request.SendWebRequest();
+        Debug.Log("Chamou");
     }
+
 //get post put delete
 }

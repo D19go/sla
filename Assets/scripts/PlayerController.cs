@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Coletavel")
         {
+            Request_Manager.AutoSave();
             GameManager.MudaPontos(1);
             Destroy(other.gameObject);
         }
