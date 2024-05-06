@@ -21,13 +21,14 @@ public class PlayerController : MonoBehaviour
         movi = movi * velocidade * Time.deltaTime;
 
         transform.Translate(movi);
+
+        
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Coletavel")
         {
-            Request_Manager.AutoSave();
             GameManager.MudaPontos(1);
             Destroy(other.gameObject);
         }

@@ -18,7 +18,7 @@ public class LeitorDeArquivo : MonoBehaviour
             string[] linhas = txt.text.Split('\n');
             foreach (string linha in linhas)
             {
-                Debug.Log(linha);
+                
             }
         }
     }

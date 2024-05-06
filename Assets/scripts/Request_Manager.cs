@@ -12,7 +12,7 @@ using UnityEditor.Experimental.GraphView;
 public class Usuario 
 {
     public int id;
-    public string name;
+    public string nome;
     public int pontos;
     public string created_at;
 
@@ -29,11 +29,14 @@ public class Request_Manager : MonoBehaviour
     static string requestUrl;
     static string response;
 
-    static string nomeUsuario;
+    static HUDcontroller hdCTRL;
 
     static string apiUrl = "https://rrilihkcbjhtognlixpk.supabase.co/rest/v1/Usuarios?";
     static string apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyaWxpaGtjYmpodG9nbmxpeHBrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTIzNDY5MjgsImV4cCI6MjAyNzkyMjkyOH0.uSUDkhBOkDpoAjfJpPUotAUZEIu3QmlowXg78qF1Db8";
-
+    private void Awake()
+    {
+        hdCTRL = GameObject.Find("Canvas").GetComponent<HUDcontroller>();
+    }
 
     public static async Task<Usuario> BuscaUsuario(string nome)
     {
@@ -59,9 +62,7 @@ public class Request_Manager : MonoBehaviour
         }
 
         List<Usuario> usuarios = JsonConvert.DeserializeObject<List<Usuario>>(response);
-        nomeUsuario = nome;
         
-        AutoSave();
         return usuarios[0];
 
     }
@@ -78,16 +79,42 @@ public class Request_Manager : MonoBehaviour
         return await BuscaUsuario(nome);
     }
 
-    public static async void AutoSave()
+    public static async void AutoSave(int id)
     {
-        string requestUrl = $"{apiUrl}nome=eq.{nomeUsuario}&apikey={apiKey}";
-        string json = $"{{\"pontos\": {pontuacao} }}";
-        UnityWebRequest request = UnityWebRequest.Put(requestUrl, json);
-        request.method = "PATH";
-        request.SetRequestHeader("Content-Type", "application/json");
+        string requestUrl = $"{apiUrl}id=eq.{id}&apikey={apiKey}";
 
+        string json = $"{{\"pontos\": {GameManager.pontos} }}";
+
+        UnityWebRequest request = UnityWebRequest.Put(requestUrl, json);
+
+        request.method = "PATCH";
+        request.SetRequestHeader("Content-Type", "application/json");
+        
         await request.SendWebRequest();
+
         Debug.Log("Chamou");
+    }
+
+    public static async Task<List<Usuario>> BuscaRanking() 
+    {
+        requestUrl = $"{apiUrl}apikey={apiKey}";
+
+        UnityWebRequest request = UnityWebRequest.Get(requestUrl);
+        await request.SendWebRequest();
+
+        response = request.downloadHandler.text;
+        Debug.Log(response);
+
+        List<Usuario> usuarios = JsonConvert.DeserializeObject<List<Usuario>>(response);
+        for (int i = 0; i < usuarios.Count; i++)
+        {
+            if (usuarios[i].pontos >= 10)
+            {
+                HUDcontroller.usuarios.Add(usuarios[i]);
+            }
+        }
+        hdCTRL.RanKING();
+        return usuarios;
     }
 
 //get post put delete
