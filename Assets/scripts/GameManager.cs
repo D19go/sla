@@ -1,21 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public TextMeshProUGUI cTimer;
     Request_Manager rm;
     public static Usuario usuario_;
+    public GameObject hud;
     GameObject spawner;
     static TextMeshProUGUI points;
     TextMeshProUGUI uName;
     string nomeUsuario;
     public static int pontos;
+    int seg = 59;
+    int min = 1;
 
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(TimerEND());
         spawner = GameObject.Find("SpawnnerItens");
         if (usuario_ != null)
         {
@@ -28,6 +34,7 @@ public class GameManager : MonoBehaviour
         points.text = pontos.ToString();
         nomeUsuario = usuario_.nome;
         uName.text = nomeUsuario;
+        hud.GetComponent<HUDcontroller>().MostranaTela();
     }
 
     // Update is called once per frame
@@ -39,6 +46,22 @@ public class GameManager : MonoBehaviour
         Request_Manager.AutoSave(usuario_.id);
     }
 
-    
+    IEnumerator TimerEND()
+    {
+        cTimer.text = $"{min}:{seg}";
+        yield return new WaitForSeconds(1f);
+        seg--;
+
+        if (seg <= 0 && min <=0)
+        {
+            PlayerController.timerOVER = false;
+        }
+        if (seg <= 0)
+        {
+            min--;
+            seg = 59;
+        }
+        StartCoroutine(TimerEND());
+    }
     
 }

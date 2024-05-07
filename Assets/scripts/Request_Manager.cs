@@ -101,15 +101,7 @@ public class Request_Manager : MonoBehaviour
         response = request.downloadHandler.text;
 
         List<Usuario> usuarios = JsonConvert.DeserializeObject<List<Usuario>>(response);
-        for (int i = 0; i < usuarios.Count; i++)
-        {
-            if (usuarios[i].pontos >= 10)
-            {
-                HUDcontroller._usuario.Add(usuarios[i]);
-                Debug.Log(usuarios[i].nome);
-            }
-        }
-        HUDcontroller.RanKING();
+        
         return usuarios;
     }
 

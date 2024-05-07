@@ -10,20 +10,14 @@ using UnityEngine.UI;
 public class HUDcontroller : MonoBehaviour
 {
     public List<TextMeshProUGUI> listTops = new List<TextMeshProUGUI>();
-    public static List<Usuario> _usuario = new List<Usuario>();
-    static int top_1PONTOS = 12;
-    static int top_2PONTOS = 11;
-    static int top_3PONTOS = 10;
+    List<Usuario> listaUsuarios;
+    int top_1PONTOS = 12;
+    int top_2PONTOS = 11;
+    int top_3PONTOS = 10;
 
-    static int top1_idStatic;
-    static int top2_idStatic;
-    static int top3_idStatic;
-
-    int top_1ID;
-    int top_2ID;
-    int top_3ID;
-
-    static bool ok = false;
+    int id_TOP1;
+    int id_TOP2;
+    int id_TOP3;
    
     GameObject enter;
 
@@ -31,6 +25,7 @@ public class HUDcontroller : MonoBehaviour
     bool yes = true;
     private void Start()
     {
+        
         enter = GameObject.Find("quadrado_Login").transform.Find("botao").gameObject;
     }
     private void Update()
@@ -38,19 +33,6 @@ public class HUDcontroller : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.KeypadEnter))
         {
             BotaoEntrar();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            Request_Manager.BuscaRanking();
-        }
-        
-        if (ok)
-        {
-            ok = false;
-            top_1ID = top1_idStatic;
-            top_2ID = top2_idStatic;
-            top_3ID = top3_idStatic;
-            MostranaTela();
         }
     }
 
@@ -80,43 +62,50 @@ public class HUDcontroller : MonoBehaviour
         
     }
 
-    public static void  RanKING()
+    
+
+    public async void MostranaTela()
     {
-        Debug.Log(_usuario.Count);
-        for (int o=0; o<4; o++)
+        List<Usuario> usuarios = await Request_Manager.BuscaRanking();
+        for (int o = 0; o < 3; o++)
         {
-            for (int i = 0; i<_usuario.Count; i++)
+
+            for (int i = 0; i<usuarios.Count; i++)
             {
-                if (_usuario[i].pontos >= top_1PONTOS)
+                if (usuarios[i].pontos >= top_1PONTOS)
                 {
-                    top_1PONTOS = _usuario[i].pontos;
-                    top1_idStatic = _usuario[i].id;
+                    top_1PONTOS = usuarios[i].pontos;
+                    id_TOP1 = i;
+                    Debug.Log(usuarios[i].id + " top1");
                 }
                 else
                 {
-                    if (_usuario[i].pontos >= top_2PONTOS)
+                    if (usuarios[i].pontos >= top_2PONTOS)
                     {
-                        top_2PONTOS = _usuario[i].pontos;
-                        top2_idStatic = _usuario[i].id;
+                        top_2PONTOS = usuarios[i].pontos;
+                        id_TOP2 = i;
+                        Debug.Log(usuarios[i].id + " top2");
                     }
                     else
                     {
-                        if (_usuario[i].pontos >= top_3PONTOS)
+                        if (usuarios[i].pontos >= top_3PONTOS)
                         {
-                            top_3PONTOS = _usuario[i].pontos;
-                            top3_idStatic = _usuario[i].id;
+                            top_3PONTOS = usuarios[i].pontos;
+                            id_TOP3 = i;
+                            Debug.Log(usuarios[i].id + " top3");
                         }
                     }
                 }
             }
         }
-        ok = true;
-    }
+        
+        Debug.Log($"{usuarios[id_TOP1].nome}: {usuarios[id_TOP1].pontos}");
+        Debug.Log($"{usuarios[id_TOP2].nome}: {usuarios[id_TOP2].pontos}");
+        Debug.Log($"{usuarios[id_TOP3].nome}: {usuarios[id_TOP3].pontos}");
+        listTops[0].text = $"{usuarios[id_TOP1].nome}: {usuarios[id_TOP1].pontos}";
+        listTops[1].text = $"{usuarios[id_TOP2].nome}: {usuarios[id_TOP2].pontos}";
+        listTops[2].text = $"{usuarios[id_TOP3].nome}: {usuarios[id_TOP3].pontos}";
 
-    void MostranaTela()
-    {
-        listTops[0].text = $"{_usuario[top_1ID].nome}: {top_1PONTOS}";
-        listTops[1].text = $"{_usuario[top_2ID].nome}: {top_2PONTOS}";
-        listTops[2].text = $"{_usuario[top_3ID].nome}: {top_3PONTOS}";
+
     }
 }

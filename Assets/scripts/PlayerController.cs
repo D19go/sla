@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static bool timerOVER = false;  
     public float velocidade;
     // Start is called before the first frame update
     void Start()
@@ -14,6 +15,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (timerOVER)
+        {
+            return;
+        }
         float hori = Input.GetAxis("Horizontal");
         float vert = Input.GetAxis("Vertical");
 
