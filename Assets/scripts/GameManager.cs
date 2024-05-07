@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         spawner = GameObject.Find("SpawnnerItens");
-        if (usuario_.nome != null)
+        if (usuario_ != null)
         {
             spawner.GetComponent<SpawnColetavel>().ok = true;
         }
@@ -28,9 +28,6 @@ public class GameManager : MonoBehaviour
         points.text = pontos.ToString();
         nomeUsuario = usuario_.nome;
         uName.text = nomeUsuario;
-
-        Debug.Log(usuario_.nome);
-        Debug.Log(usuario_.pontos);
     }
 
     // Update is called once per frame
