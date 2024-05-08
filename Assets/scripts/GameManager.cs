@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     TextMeshProUGUI uName;
     string nomeUsuario;
     public static int pontos;
-    int seg = 59;
+    int seg = 30;
     int min = 1;
 
     // Start is called before the first frame update
@@ -49,19 +49,19 @@ public class GameManager : MonoBehaviour
     IEnumerator TimerEND()
     {
         cTimer.text = $"{min}:{seg}";
-        yield return new WaitForSeconds(1f);
         seg--;
+        yield return new WaitForSeconds(1f);
 
-        if (seg <= 0 && min <=0)
+        if (seg <= 0 && min <= 0)
         {
-            PlayerController.timerOVER = false;
-        }
-        if (seg <= 0)
+            PlayerController.timerOVER = true;
+            cTimer.GetComponentInParent<GameObject>().SetActive(false);
+        }else if (seg <= 0)
         {
             min--;
             seg = 59;
         }
-        StartCoroutine(TimerEND());
+            StartCoroutine(TimerEND());
     }
     
 }

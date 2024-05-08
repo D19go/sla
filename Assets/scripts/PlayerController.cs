@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     public static bool timerOVER = false;  
     public float velocidade;
+    public GameObject atk;
+    bool atkk = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +27,12 @@ public class PlayerController : MonoBehaviour
         Vector3 movi = new Vector3 (hori,0, vert);
         movi = movi * velocidade * Time.deltaTime;
 
+        Vector3 mousePosition = Input.mousePosition;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(Ataque());
+        }
         transform.Translate(movi);
 
         
@@ -37,5 +45,14 @@ public class PlayerController : MonoBehaviour
             GameManager.MudaPontos(1);
             Destroy(other.gameObject);
         }
+    }
+
+    IEnumerator Ataque()
+    {
+        atkk = !atkk;
+        atk.SetActive(atkk);
+        yield return new WaitForSeconds(1);
+        atkk = !atkk;
+        atk.SetActive(atkk);
     }
 }

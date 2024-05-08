@@ -76,7 +76,6 @@ public class HUDcontroller : MonoBehaviour
                 {
                     top_1PONTOS = usuarios[i].pontos;
                     id_TOP1 = i;
-                    Debug.Log(usuarios[i].id + " top1");
                 }
                 else
                 {
@@ -84,7 +83,6 @@ public class HUDcontroller : MonoBehaviour
                     {
                         top_2PONTOS = usuarios[i].pontos;
                         id_TOP2 = i;
-                        Debug.Log(usuarios[i].id + " top2");
                     }
                     else
                     {
@@ -92,16 +90,12 @@ public class HUDcontroller : MonoBehaviour
                         {
                             top_3PONTOS = usuarios[i].pontos;
                             id_TOP3 = i;
-                            Debug.Log(usuarios[i].id + " top3");
                         }
                     }
                 }
             }
         }
-        
-        Debug.Log($"{usuarios[id_TOP1].nome}: {usuarios[id_TOP1].pontos}");
-        Debug.Log($"{usuarios[id_TOP2].nome}: {usuarios[id_TOP2].pontos}");
-        Debug.Log($"{usuarios[id_TOP3].nome}: {usuarios[id_TOP3].pontos}");
+
         listTops[0].text = $"{usuarios[id_TOP1].nome}: {usuarios[id_TOP1].pontos}";
         listTops[1].text = $"{usuarios[id_TOP2].nome}: {usuarios[id_TOP2].pontos}";
         listTops[2].text = $"{usuarios[id_TOP3].nome}: {usuarios[id_TOP3].pontos}";

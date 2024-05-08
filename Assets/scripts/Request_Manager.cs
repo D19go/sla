@@ -87,8 +87,6 @@ public class Request_Manager : MonoBehaviour
         request.SetRequestHeader("Content-Type", "application/json");
         
         await request.SendWebRequest();
-
-        Debug.Log("Chamou");
     }
 
     public static async Task<List<Usuario>> BuscaRanking() 
