@@ -8,6 +8,11 @@ public class PlayerController : MonoBehaviour
     public float velocidade;
     public GameObject atk;
     bool atkk = false;
+
+    float rotationX = 0;
+    float limitVisionY = 45f;
+    public float speedRotetion = 5f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +32,11 @@ public class PlayerController : MonoBehaviour
         Vector3 movi = new Vector3 (hori,0, vert);
         movi = movi * velocidade * Time.deltaTime;
 
-        Vector3 mousePosition = Input.mousePosition;
+        Vector2 mousePosition = Input.mousePosition;
+
+        rotationX -= Input.GetAxis("Mouse Y") * speedRotetion;
+        //rotationX = Mathf.Clamp(rotationX, -limitVisionY, limitVisionY);
+        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * speedRotetion, 0);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
