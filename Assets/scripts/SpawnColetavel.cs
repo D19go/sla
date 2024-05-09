@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using FishNet.Object;
 using UnityEngine;
 
-public class SpawnColetavel : MonoBehaviour
+public class SpawnColetavel : NetworkBehaviour
 {
     public float timeSpawn = 0.5f;
     public GameObject coletavel1;
@@ -19,11 +20,16 @@ public class SpawnColetavel : MonoBehaviour
     // Update is called once per frame
     void Gerador()
     {
+        if (!base.IsServerInitialized)
+        {
+            return;
+        }
         if (ok)
         {
             float AreaX = Area.localScale.x / 2;
+            Debug.Log(AreaX);
             float AreaZ = Area.localScale.z / 2;
-
+            Debug.Log(AreaZ);
             float AleAreX = Random.Range(-AreaX, AreaX);
             float AleAreZ = Random.Range(-AreaZ, AreaZ);
 

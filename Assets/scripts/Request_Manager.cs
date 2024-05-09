@@ -1,12 +1,8 @@
 using Newtonsoft.Json;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using Newtonsoft;
 using System.Threading.Tasks;
-using UnityEditor.SearchService;
-using UnityEditor.Experimental.GraphView;
 
 
 public class Usuario 
