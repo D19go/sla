@@ -4,12 +4,16 @@ using UnityEngine;
 using FishNet;
 using FishNet.Object;
 
-public class PlayerController : NetworkBehaviour
+public class PlayerController : MonoBehaviour
 {
     public static bool timerOVER = false;  
-    public float velocidade;
+    float velocidade;
     public GameObject escudo;
     bool esc = false;
+    public float speedBase;
+    [SerializeField] private int rotacaoTanque;
+    [SerializeField] private GameObject torreta;
+    [SerializeField] private GameObject canoTorreta;
 
     //-------------------------------------
 
@@ -27,7 +31,7 @@ public class PlayerController : NetworkBehaviour
     //-------------------------------------
 
     float rotationX = 10;
-    public float speedRotetion = 5f;
+    public float speedRotation = 5f;
 
     //-------------------------------------
 
@@ -35,6 +39,7 @@ public class PlayerController : NetworkBehaviour
     bool b1 = false;
     bool e2 = false;
     bool cursor = false;
+    Rigidbody rb;
 
     Vector3 rotationLocal = Vector3.zero;
     
@@ -43,16 +48,14 @@ public class PlayerController : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        velocidade = speedBase;
+        rb = GetComponent<Rigidbody>();
         conteiner = GameObject.Find("Disparo_Conteiner").GetComponent<Transform>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!base.IsOwner)
-        {
-            return;
-        }
         if (timerOVER)
         {
             return;
@@ -71,25 +74,39 @@ public class PlayerController : NetworkBehaviour
                 Cursor.visible = cursor;
             }
         }
-        float hori = Input.GetAxis("Horizontal");
-        float vert = Input.GetAxis("Vertical");
-
-        Vector3 movi = new Vector3 (hori,0, vert);
-        movi = movi * velocidade * Time.deltaTime;
 
         Vector3 mousePosition = Input.mousePosition;
 
-        rotationX -= Input.GetAxis("Mouse Y") * speedRotetion;
-        transform.rotation *= Quaternion.Euler(0,Input.GetAxis("Mouse X") * speedRotetion, 0);
-        transform.Translate(movi);
+        canoTorreta.transform.Rotate(Input.GetAxis("Mouse Y") * speedRotation, 0, 0);
+        torreta.transform.Rotate(0,0,Input.GetAxis("Mouse X"));
+        Vector3 direcaoFrente = transform.forward; // Obtenha a direção para a frente com base na orientação atual do objeto
 
-        if (Input.GetKey(KeyCode.LeftShift))
+        
+
+        if (Input.GetKey(KeyCode.W))
         {
-            velocidade = 30;
+            rb.MovePosition(transform.position + direcaoFrente * velocidade * Time.fixedDeltaTime);
         }
-        else
+        else if (Input.GetKey(KeyCode.S))
         {
-            velocidade = 15;
+            rb.MovePosition(transform.position + -direcaoFrente * velocidade * Time.fixedDeltaTime);
+        }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            transform.Rotate(0, transform.rotation.y + -rotacaoTanque * Time.fixedDeltaTime,0 );
+        }else if (Input.GetKey(KeyCode.D))
+        {
+            transform.Rotate(0, transform.rotation.y + rotacaoTanque * Time.fixedDeltaTime, 0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            velocidade *= 2;
+        }
+        else if(Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            velocidade = speedBase;
         }
         
 
@@ -142,6 +159,23 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    private void OnCollisionStay(Collision coli)
+    {
+    
+        if (coli.gameObject.layer != 4 && Vector3.Dot(transform.forward, coli.contacts[0].normal) < 0 )
+        {
+            velocidade = 1;
+        }
+    }
+
+    private void OnCollisionExit(Collision coli)
+    {
+        if (coli.gameObject.layer != 4)
+        {
+            velocidade = speedBase;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Coletavel")
@@ -155,7 +189,7 @@ public class PlayerController : NetworkBehaviour
     {
         GameObject nBala = Instantiate(prefab, exit.position, Quaternion.identity);
         nBala.transform.parent = conteiner;
-        nBala.GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * forca * Time.deltaTime, ForceMode.Impulse);
+        nBala.GetComponent<Rigidbody>().AddForce(exit.forward * forca * Time.fixedDeltaTime, ForceMode.Impulse);
     }
 
     IEnumerator Ataque()

@@ -20,7 +20,7 @@ public class Bullets : MonoBehaviour
         } else if (transform.tag == "Bullet2")
 
         {
-            Destroy(gameObject, 5f);
+            Destroy(gameObject, 3f);
             dano *= multiplicador;
         }
 
