@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
 
         uName = GameObject.Find("Canvas").transform.Find("nome").GetComponent<TextMeshProUGUI>();
         points = GameObject.Find("pontos_Num").GetComponent<TextMeshProUGUI>();
-        pontos = usuario_.pontos;
+        pontos = usuario_.pontos;   
         points.text = pontos.ToString();
         nomeUsuario = usuario_.nome;
         uName.text = nomeUsuario;

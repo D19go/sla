@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: DefaultPrefabObjects
   m_EditorClassIdentifier: 
   _prefabs:
+  - {fileID: 31228811029170136, guid: fb1e53fd5ac085d45abf013b96cafff4, type: 3}
+  - {fileID: -6230288603844399453, guid: fa2ebad9f115d3640a51c551960a3112, type: 3}
+  - {fileID: 762692921198360373, guid: e38bb141d7194ed438d9b3631e497c2f, type: 3}
+  - {fileID: -4772939987109391182, guid: 291c4bad5933f9044b57be112a515ea2, type: 3}
+  - {fileID: 3885689216722992045, guid: 2d9c3d6b06164894c9a94b127fb55cff, type: 3}
+  - {fileID: -4318585674399869764, guid: d39e2c676d9d4cc47948c489445a6c22, type: 3}
+  - {fileID: 9043806079485700892, guid: 413b6426b26f83546838b98ae4665f69, type: 3}
   - {fileID: 8475222101369129519, guid: 8cf33e8e99a9b0c4c8f29ff725650de6, type: 3}
   - {fileID: 4512293259955182956, guid: 44611030e61220d42ab7c37ba3c0ea92, type: 3}
   - {fileID: 4512293259955182956, guid: 0d6d0f48b03b17f49a6340103cd9b9d0, type: 3}

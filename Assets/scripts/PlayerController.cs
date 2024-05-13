@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using FishNet;
 using FishNet.Object;
+using Unity.VisualScripting;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     public static bool timerOVER = false;  
     float velocidade;
@@ -12,8 +13,8 @@ public class PlayerController : MonoBehaviour
     bool esc = false;
     public float speedBase;
     [SerializeField] private int rotacaoTanque;
-    [SerializeField] private GameObject torreta;
-    [SerializeField] private GameObject canoTorreta;
+    //[SerializeField] private GameObject torreta;
+    //[SerializeField] private GameObject canoTorreta;
 
     //-------------------------------------
 
@@ -44,18 +45,26 @@ public class PlayerController : MonoBehaviour
     Vector3 rotationLocal = Vector3.zero;
     
 
-
-    // Start is called before the first frame update
-    void Start()
+    public override void OnStartClient()
     {
+        base.OnStartClient();
+        if (!base.IsOwner)
+        {
+            return; 
+        }
         velocidade = speedBase;
         rb = GetComponent<Rigidbody>();
         conteiner = GameObject.Find("Disparo_Conteiner").GetComponent<Transform>();
+        transform.Find("CameraMain").gameObject.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!base.IsOwner)
+        {
+            return;
+        }
         if (timerOVER)
         {
             return;
@@ -77,8 +86,8 @@ public class PlayerController : MonoBehaviour
 
         Vector3 mousePosition = Input.mousePosition;
 
-        canoTorreta.transform.Rotate(Input.GetAxis("Mouse Y") * speedRotation, 0, 0);
-        torreta.transform.Rotate(0,0,Input.GetAxis("Mouse X"));
+        transform.Rotate(0,Input.GetAxis("Mouse X") * speedRotation, 0);
+        //torreta.transform.Rotate(0,0,Input.GetAxis("Mouse X"));
         Vector3 direcaoFrente = transform.forward; // Obtenha a direção para a frente com base na orientação atual do objeto
 
         
@@ -92,13 +101,13 @@ public class PlayerController : MonoBehaviour
             rb.MovePosition(transform.position + -direcaoFrente * velocidade * Time.fixedDeltaTime);
         }
 
-        if (Input.GetKey(KeyCode.A))
+        /*if (Input.GetKey(KeyCode.A))
         {
             transform.Rotate(0, transform.rotation.y + -rotacaoTanque * Time.fixedDeltaTime,0 );
         }else if (Input.GetKey(KeyCode.D))
         {
             transform.Rotate(0, transform.rotation.y + rotacaoTanque * Time.fixedDeltaTime, 0);
-        }
+        }*/
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
@@ -137,11 +146,11 @@ public class PlayerController : MonoBehaviour
         {
             if (!b1)
             {
-                Atirar(bullet, force);
+                Server_AtirarRpc(bullet, force);
             }
             else
             {
-                Atirar(bullet2, force);
+                Server_AtirarRpc(bullet2, force);
             }
 
         }
@@ -150,59 +159,62 @@ public class PlayerController : MonoBehaviour
         {
             if (!e2)
             {
-                Atirar(especial, especialForce);
+                Server_AtirarRpc(especial, especialForce);
 
             }else
             {
-                Atirar(especial2, especialForce);
+                Server_AtirarRpc(especial2, especialForce);
             }
         }
     }
 
     private void OnCollisionStay(Collision coli)
     {
-    
+        if (!base.IsOwner)
+        {
+            return;
+        }
         if (coli.gameObject.layer != 4 && Vector3.Dot(transform.forward, coli.contacts[0].normal) < 0 )
         {
             velocidade = 1;
         }
     }
 
-    private void OnCollisionExit(Collision coli)
-    {
-        if (coli.gameObject.layer != 4)
-        {
-            velocidade = speedBase;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Coletavel")
-        {
-            GameManager.MudaPontos(1);
-            Destroy(other.gameObject);
-        }
-    }
-
-    void Atirar(GameObject prefab, int forca)
+    [ServerRpc]
+    void Server_AtirarRpc(GameObject prefab, int forca)
     {
         GameObject nBala = Instantiate(prefab, exit.position, Quaternion.identity);
         nBala.transform.parent = conteiner;
         nBala.GetComponent<Rigidbody>().AddForce(exit.forward * forca * Time.fixedDeltaTime, ForceMode.Impulse);
+        base.Spawn(nBala);
+        //Tiro_Client(prefab,forca);
     }
+    /*
+    void Tiro_Client(GameObject prefab, int forca)
+    {
+        GameObject nBala = Instantiate(prefab, exit.position, Quaternion.identity);
+        nBala.transform.parent = conteiner;
+        nBala.GetComponent<Rigidbody>().AddForce(exit.forward * forca * Time.fixedDeltaTime, ForceMode.Impulse);
+    }*/
 
     IEnumerator Ataque()
     {
-        esc = !esc;
-        escudo.SetActive(esc);
-        yield return new WaitForSeconds(2);
-        esc = !esc;
-        escudo.SetActive(esc);
+        if (IsOwner)
+        {
+            esc = !esc;
+            escudo.SetActive(esc);
+            yield return new WaitForSeconds(2);
+            esc = !esc;
+            escudo.SetActive(esc);
+        }
     }
 
     public void Hit(int dano)
     {
+        if (!base.IsOwner)
+        {
+            return;
+        }
         if (esc)
         {
             return;
@@ -214,4 +226,28 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnCollisionExit(Collision coli)
+    {
+        if (!base.IsOwner)
+        {
+            return;
+        }
+        if (coli.gameObject.layer != 4)
+        {
+            velocidade = speedBase;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!base.IsOwner)
+        {
+            return;
+        }
+        if (other.gameObject.tag == "Coletavel")
+        {
+            GameManager.MudaPontos(1);
+            Destroy(other.gameObject);
+        }
+    }
 }

@@ -8,7 +8,6 @@ public class SpawnColetavel : MonoBehaviour
     public float timeSpawn = 0.5f;
     public GameObject coletavel1;
     public GameObject coletavel2;
-    public Transform Area;
     public float AreaZ = 199;
     public float AreaX = 124;
 
