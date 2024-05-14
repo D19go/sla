@@ -1,3 +1,4 @@
+using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,7 +21,9 @@ public class HUD_Player : MonoBehaviour
 
     public static bool golpeando = true;
 
-    void Start()
+    public static HUD_Player instancia;
+
+    void Awake()
     {
         slots1_2 = false;
         slots3_4 = false;
@@ -67,6 +70,7 @@ public class HUD_Player : MonoBehaviour
 
     public void Barra(int dano)
     {
+        
         VidaAtual -= dano;
         float fillAmount = VidaAtual / vidaTotal;
         lifebar.fillAmount = fillAmount;

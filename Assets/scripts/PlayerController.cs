@@ -4,6 +4,7 @@ using UnityEngine;
 using FishNet;
 using FishNet.Object;
 using Unity.VisualScripting;
+using FishNet.Connection;
 
 public class PlayerController : NetworkBehaviour
 {
@@ -28,6 +29,8 @@ public class PlayerController : NetworkBehaviour
 
     public GameObject especial;
     public GameObject especial2;
+    public float timerShoot = 5f;
+    bool shoot = true;
 
     //-------------------------------------
 
@@ -52,6 +55,7 @@ public class PlayerController : NetworkBehaviour
         {
             return; 
         }
+        transform.Find("hud").gameObject.SetActive(true);
         velocidade = speedBase;
         rb = GetComponent<Rigidbody>();
         conteiner = GameObject.Find("Disparo_Conteiner").GetComponent<Transform>();
@@ -83,8 +87,6 @@ public class PlayerController : NetworkBehaviour
                 Cursor.visible = cursor;
             }
         }
-
-        Vector3 mousePosition = Input.mousePosition;
 
         transform.Rotate(0,Input.GetAxis("Mouse X") * speedRotation, 0);
         //torreta.transform.Rotate(0,0,Input.GetAxis("Mouse X"));
@@ -146,24 +148,25 @@ public class PlayerController : NetworkBehaviour
         {
             if (!b1)
             {
-                Server_AtirarRpc(bullet, force);
+                Server_AtirarRpc(base.Owner, bullet, force);
             }
             else
             {
-                Server_AtirarRpc(bullet2, force);
+                Server_AtirarRpc(base.Owner, bullet2, force);
             }
 
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (Input.GetKeyDown(KeyCode.Mouse1) && shoot)
         {
+            shoot = !shoot;   
             if (!e2)
             {
-                Server_AtirarRpc(especial, especialForce);
+                Server_AtirarRpc(base.Owner, especial, especialForce);
 
             }else
             {
-                Server_AtirarRpc(especial2, especialForce);
+                Server_AtirarRpc(base.Owner,especial2, especialForce);
             }
         }
     }
@@ -181,21 +184,25 @@ public class PlayerController : NetworkBehaviour
     }
 
     [ServerRpc]
-    void Server_AtirarRpc(GameObject prefab, int forca)
+    void Server_AtirarRpc(NetworkConnection conn,GameObject prefab, int forca)
     {
         GameObject nBala = Instantiate(prefab, exit.position, Quaternion.identity);
         nBala.transform.parent = conteiner;
         nBala.GetComponent<Rigidbody>().AddForce(exit.forward * forca * Time.fixedDeltaTime, ForceMode.Impulse);
         base.Spawn(nBala);
-        //Tiro_Client(prefab,forca);
+        StartCoroutine(ResetarTiro());
+        IEnumerator ResetarTiro()
+        {
+            yield return new WaitForSeconds(timerShoot);
+            Target_Recall_Tiro(conn);
+        }
     }
-    /*
-    void Tiro_Client(GameObject prefab, int forca)
+
+    [TargetRpc]
+    void Target_Recall_Tiro(NetworkConnection conn)
     {
-        GameObject nBala = Instantiate(prefab, exit.position, Quaternion.identity);
-        nBala.transform.parent = conteiner;
-        nBala.GetComponent<Rigidbody>().AddForce(exit.forward * forca * Time.fixedDeltaTime, ForceMode.Impulse);
-    }*/
+       shoot = !shoot;
+    }
 
     IEnumerator Ataque()
     {
@@ -209,7 +216,9 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    public void Hit(int dano)
+
+    [TargetRpc]
+    public void Hit(NetworkConnection conn, int dano)
     {
         if (!base.IsOwner)
         {
@@ -220,7 +229,7 @@ public class PlayerController : NetworkBehaviour
             return;
         }
         vida -= dano;
-        gameObject.GetComponent<HUD_Player>().Barra(dano);
+        transform.GetComponent<HUD_Player>().Barra(dano);
         if (vida <= 0){
             Destroy(gameObject);
         }

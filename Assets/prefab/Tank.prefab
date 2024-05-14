@@ -907,6 +907,7 @@ MonoBehaviour:
   bullet2: {fileID: 5039887379889434413, guid: e38bb141d7194ed438d9b3631e497c2f, type: 3}
   especial: {fileID: 2718182050723992544, guid: 291c4bad5933f9044b57be112a515ea2, type: 3}
   especial2: {fileID: 2000644234859063067, guid: 2d9c3d6b06164894c9a94b127fb55cff, type: 3}
+  timerShoot: 5
   speedRotation: 5
   vida: 200
 --- !u!114 &8941942375580439727
@@ -1449,7 +1450,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6262296598475151691
 RectTransform:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using FishNet.Connection;
 using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,31 +9,34 @@ public class Bullets : NetworkBehaviour
     int dano = 5;
     int multiplicador = 2;
     int repique = 0;
+    int time = 2;
     
     Rigidbody rb;
 
     // Start is called before the first frame update
-    override public void OnStartClient()
+    override public void OnStartServer()
     {
-        base.OnStartClient();
+        base.OnStartServer();
         rb = GetComponent<Rigidbody>();
         if (transform.tag == "Bullet") 
         {
-            Destroy(gameObject, 2f);
+            Timer();
         } else if (transform.tag == "Bullet2")
 
         {
-            Destroy(gameObject, 3f);
+            Timer();
             dano *= multiplicador;
         }
 
         if (transform.tag == "Especial")
         {
-            Destroy(gameObject, 10f);
+            time = 10;
+            Timer();
             dano *= multiplicador * multiplicador;
         }else if (transform.tag == "Especial2")
         {
-            Destroy(gameObject, 10f);
+            time = 10;
+            Timer();
             multiplicador = 10;
             dano *= multiplicador;
         }
@@ -45,17 +49,14 @@ public class Bullets : NetworkBehaviour
         {
             if (coli.gameObject.tag != "Player")
             {
-                Destroy(gameObject);
+                base.Despawn(gameObject);
             }
         }
 
         if (coli.gameObject.tag == "Player")
         {
-            if (coli.transform.parent != transform.parent)
-            { 
-                coli.gameObject.GetComponent<PlayerController>().Hit(dano);
-                Destroy(gameObject);
-            }
+            coli.gameObject.GetComponent<PlayerController>().Hit(coli.gameObject.GetComponent<PlayerController>().Owner, dano);
+            base.Despawn(gameObject);
         }
 
         if (transform.tag == "Especial")
@@ -67,18 +68,20 @@ public class Bullets : NetworkBehaviour
             repique++;
             if (repique >= 6)
             {
-                Destroy(gameObject);
+                base.Despawn(gameObject);
             }
         }
 
-        
-
-            
     }
 
-    // Update is called once per frame
-    void Update()
+    [ServerRpc(RequireOwnership = false)]
+    void Timer()
     {
-        
+        StartCoroutine(destroy());
+        IEnumerator destroy()
+        {
+            yield return new WaitForSeconds(time);
+            base.Despawn(gameObject);
+        }
     }
 }
