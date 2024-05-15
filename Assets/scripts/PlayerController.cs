@@ -188,7 +188,7 @@ public class PlayerController : NetworkBehaviour
     {
         GameObject nBala = Instantiate(prefab, exit.position, Quaternion.identity);
         nBala.transform.parent = conteiner;
-        nBala.GetComponent<Rigidbody>().AddForce(exit.forward * forca * Time.fixedDeltaTime, ForceMode.Impulse);
+        nBala.GetComponent<Rigidbody>().AddForce(-exit.right * forca * Time.fixedDeltaTime, ForceMode.Impulse);
         base.Spawn(nBala);
         StartCoroutine(ResetarTiro());
         IEnumerator ResetarTiro()
