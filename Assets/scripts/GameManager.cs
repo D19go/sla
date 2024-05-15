@@ -1,3 +1,4 @@
+using FishNet.Example;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -9,6 +10,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI cTimer;
     Request_Manager rm;
     public static Usuario usuario_;
+    GameObject dead;
+    NetworkHudCanvases nc;
     public GameObject hud;
     GameObject spawner;
     static TextMeshProUGUI points;
@@ -27,7 +30,12 @@ public class GameManager : MonoBehaviour
         {
             spawner.GetComponent<SpawnColetavel>().ok = true;
         }
-
+        dead = GameObject.Find("Canvas").transform.Find("dead").gameObject;
+        if (dead == null)
+        {
+            Debug.Log("asdf");
+        }
+        nc = GameObject.Find("NetworkManager").transform.Find("NetworkHudCanvas").transform.GetComponent<NetworkHudCanvases>();
         uName = GameObject.Find("Canvas").transform.Find("nome").GetComponent<TextMeshProUGUI>();
         points = GameObject.Find("pontos_Num").GetComponent<TextMeshProUGUI>();
         pontos = usuario_.pontos;   
@@ -63,5 +71,11 @@ public class GameManager : MonoBehaviour
         }
             StartCoroutine(TimerEND());
     }
-    
+
+    public void Reviver()
+    {
+        dead.SetActive(false);
+        nc.OnClick_Client();
+    }
+
 }

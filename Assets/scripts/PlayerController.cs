@@ -5,6 +5,7 @@ using FishNet;
 using FishNet.Object;
 using Unity.VisualScripting;
 using FishNet.Connection;
+using FishNet.Example;
 
 public class PlayerController : NetworkBehaviour
 {
@@ -16,6 +17,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private int rotacaoTanque;
     //[SerializeField] private GameObject torreta;
     //[SerializeField] private GameObject canoTorreta;
+    [SerializeField] GameObject dead;
 
     //-------------------------------------
 
@@ -44,7 +46,7 @@ public class PlayerController : NetworkBehaviour
     bool e2 = false;
     bool cursor = false;
     Rigidbody rb;
-
+    NetworkHudCanvases nc;
     Vector3 rotationLocal = Vector3.zero;
     
 
@@ -60,6 +62,8 @@ public class PlayerController : NetworkBehaviour
         rb = GetComponent<Rigidbody>();
         conteiner = GameObject.Find("Disparo_Conteiner").GetComponent<Transform>();
         transform.Find("CameraMain").gameObject.SetActive(true);
+        nc = GameObject.Find("NetworkManager").transform.Find("NetworkHudCanvas").GetComponent<NetworkHudCanvases>();
+        dead = GameObject.Find("Canvas").transform.Find("dead").gameObject;
     }
 
     // Update is called once per frame
@@ -186,9 +190,9 @@ public class PlayerController : NetworkBehaviour
     [ServerRpc]
     void Server_AtirarRpc(NetworkConnection conn,GameObject prefab, int forca)
     {
-        GameObject nBala = Instantiate(prefab, exit.position, Quaternion.identity);
+        GameObject nBala = Instantiate(prefab, exit.position, exit.rotation);
         nBala.transform.parent = conteiner;
-        nBala.GetComponent<Rigidbody>().AddForce(-exit.right * forca * Time.fixedDeltaTime, ForceMode.Impulse);
+        nBala.GetComponent<Rigidbody>().AddForce(nBala.transform.forward * forca * Time.fixedDeltaTime, ForceMode.Impulse);
         base.Spawn(nBala);
         StartCoroutine(ResetarTiro());
         IEnumerator ResetarTiro()
@@ -231,7 +235,10 @@ public class PlayerController : NetworkBehaviour
         vida -= dano;
         transform.GetComponent<HUD_Player>().Barra(dano);
         if (vida <= 0){
-            Destroy(gameObject);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            dead.SetActive(true);
+            nc.OnClick_Client();
         }
     }
 

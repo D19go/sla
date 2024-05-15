@@ -19,9 +19,7 @@ public class HUD_Player : MonoBehaviour
     public Image slot3;
     public Image slot4;
 
-    public static bool golpeando = true;
 
-    public static HUD_Player instancia;
 
     void Awake()
     {

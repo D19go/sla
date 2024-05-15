@@ -1,3 +1,4 @@
+using FishNet.Example;
 using NUnit.Framework.Internal;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,12 +22,15 @@ public class HUDcontroller : MonoBehaviour
    
     GameObject enter;
 
+   
     public TMP_InputField inputNome;
     bool yes = true;
-    private void Start()
+    
+    private void Awake()
     {
-        
         enter = GameObject.Find("quadrado_Login").transform.Find("botao").gameObject;
+        
+        
     }
     private void Update()
     {
@@ -102,4 +106,7 @@ public class HUDcontroller : MonoBehaviour
 
 
     }
+
+    
+
 }

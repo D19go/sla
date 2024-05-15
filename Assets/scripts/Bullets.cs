@@ -74,7 +74,7 @@ public class Bullets : NetworkBehaviour
 
     }
 
-    [ServerRpc(RequireOwnership = false)]
+
     void Timer()
     {
         StartCoroutine(destroy());
