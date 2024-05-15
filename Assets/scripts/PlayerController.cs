@@ -177,7 +177,7 @@ public class PlayerController : NetworkBehaviour
         {
             return;
         }
-        if (coli.gameObject.layer != 4 && Vector3.Dot(transform.forward, coli.contacts[0].normal) < 0 )
+        if (coli.gameObject.layer != 4 && Vector3.Dot(transform.forward, coli.contacts[0].normal) < 0 && coli.gameObject.layer != 3)
         {
             velocidade = 1;
         }
@@ -241,7 +241,7 @@ public class PlayerController : NetworkBehaviour
         {
             return;
         }
-        if (coli.gameObject.layer != 4)
+        if (coli.gameObject.layer != 4 && coli.gameObject.layer != 3)
         {
             velocidade = speedBase;
         }
@@ -258,5 +258,11 @@ public class PlayerController : NetworkBehaviour
             GameManager.MudaPontos(1);
             Destroy(other.gameObject);
         }
+    }
+
+    [TargetRpc]
+    public void Reset_Transform(NetworkConnection conn)
+    {
+        transform.position = new Vector3(0, 2, 0);
     }
 }
