@@ -19,7 +19,7 @@ public class SpawnColetavel : NetworkBehaviour
         InvokeRepeating("Gerador", 3, timeSpawn);
     }
 
-    // Update is called once per frame
+    [Server]
     void Gerador()
     {
         
@@ -35,12 +35,13 @@ public class SpawnColetavel : NetworkBehaviour
             {
                 GameObject novo = Instantiate(coletavel1, transform);
                 novo.transform.position = localSpawn;
-
+                base.Spawn(novo);
             }
             else
             {
                 GameObject novo = Instantiate(coletavel2,transform);
                 novo.transform.position = localSpawn;
+                base.Spawn(novo);
             }
         }
     }
