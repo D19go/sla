@@ -60,8 +60,9 @@ public class PlayerController : NetworkBehaviour
         transform.Find("hud").gameObject.SetActive(true);
         velocidade = speedBase;
         rb = GetComponent<Rigidbody>();
-        conteiner = GameObject.Find("Disparo_Conteiner").GetComponent<Transform>();
-        transform.Find("CameraMain").gameObject.SetActive(true);
+        conteiner = transform.Find("Disparo_Conteiner").GetComponent<Transform>();
+        conteiner.GetComponent<GameObject>().SetActive(true);
+        transform.Find("corpo").transform.Find("base").transform.Find("base").transform.Find("cano").Find("CameraMain").gameObject.SetActive(true);
         nc = GameObject.Find("NetworkManager").transform.Find("NetworkHudCanvas").GetComponent<NetworkHudCanvases>();
         dead = GameObject.Find("Canvas").transform.Find("dead").gameObject;
     }
@@ -192,7 +193,7 @@ public class PlayerController : NetworkBehaviour
     {
         GameObject nBala = Instantiate(prefab, exit.position, exit.rotation);
         nBala.transform.parent = conteiner;
-        nBala.GetComponent<Rigidbody>().AddForce(nBala.transform.forward * forca * Time.fixedDeltaTime, ForceMode.Impulse);
+        nBala.GetComponent<Rigidbody>().AddForce(exit.forward * forca * Time.fixedDeltaTime, ForceMode.Impulse);
         base.Spawn(nBala);
         StartCoroutine(ResetarTiro());
         IEnumerator ResetarTiro()

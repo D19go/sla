@@ -45,6 +45,7 @@ public class Bullets : NetworkBehaviour
 
     private void OnCollisionEnter(Collision coli)
     {
+
         if (transform.tag == "Bullet")
         {
             if (coli.gameObject.tag != "Player")
@@ -55,8 +56,11 @@ public class Bullets : NetworkBehaviour
 
         if (coli.gameObject.tag == "Player")
         {
-            coli.gameObject.GetComponent<PlayerController>().Hit(coli.gameObject.GetComponent<PlayerController>().Owner, dano);
-            base.Despawn(gameObject);
+            if (coli.transform.parent != transform.parent)
+            {
+                coli.gameObject.GetComponent<PlayerController>().Hit(coli.gameObject.GetComponent<PlayerController>().Owner, dano);
+                base.Despawn(gameObject);
+            }
         }
 
         if (transform.tag == "Especial")

@@ -12,7 +12,15 @@ public class Match : MonoBehaviour
     public NetworkHudCanvases nc;
     public GameObject painel;
 
-    // Update is called once per frame
+    public void Server_IP()
+    {
+        tugboat.SetServerBindAddress(input_IP.text, 0);
+        tugboat.SetClientAddress(input_IP.text);
+        nc.OnClick_Server();
+        nc.OnClick_Client();
+        painel.SetActive(false);
+    }
+
     public void IP()
     {
         tugboat.SetClientAddress(input_IP.text);
