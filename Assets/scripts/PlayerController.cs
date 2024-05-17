@@ -15,8 +15,8 @@ public class PlayerController : NetworkBehaviour
     bool esc = false;
     public float speedBase;
     [SerializeField] private int rotacaoTanque;
-    //[SerializeField] private GameObject torreta;
-    //[SerializeField] private GameObject canoTorreta;
+    [SerializeField] private GameObject torreta;
+    [SerializeField] private GameObject canoTorreta;
     [SerializeField] GameObject dead;
 
     //-------------------------------------
@@ -93,28 +93,28 @@ public class PlayerController : NetworkBehaviour
             }
         }
 
-        transform.Rotate(0,Input.GetAxis("Mouse X") * speedRotation, 0);
-        //torreta.transform.Rotate(0,0,Input.GetAxis("Mouse X"));
-        Vector3 direcaoFrente = transform.forward; // Obtenha a direção para a frente com base na orientação atual do objeto
+        canoTorreta.transform.Rotate(Input.GetAxis("Mouse Y"), 0,0);
+        torreta.transform.Rotate(0,0,Input.GetAxis("Mouse X") * speedRotation);
+        Vector3 direcaoFrente = transform.up; // Obtenha a direção para a frente com base na orientação atual do objeto
 
         
 
         if (Input.GetKey(KeyCode.W))
         {
-            rb.MovePosition(transform.position + direcaoFrente * velocidade * Time.fixedDeltaTime);
+            rb.MovePosition(transform.position + -direcaoFrente * velocidade * Time.fixedDeltaTime);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            rb.MovePosition(transform.position + -direcaoFrente * velocidade * Time.fixedDeltaTime);
+            rb.MovePosition(transform.position + direcaoFrente * velocidade * Time.fixedDeltaTime);
         }
 
-        /*if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(0, transform.rotation.y + -rotacaoTanque * Time.fixedDeltaTime,0 );
+            transform.Rotate(0,0, -rotacaoTanque * Time.fixedDeltaTime);
         }else if (Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(0, transform.rotation.y + rotacaoTanque * Time.fixedDeltaTime, 0);
-        }*/
+            transform.Rotate(0,0, rotacaoTanque * Time.fixedDeltaTime);
+        }
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
@@ -192,7 +192,7 @@ public class PlayerController : NetworkBehaviour
     void Server_AtirarRpc(NetworkConnection conn,GameObject prefab, int forca)
     {
         GameObject nBala = Instantiate(prefab, exit.position, exit.rotation);
-        nBala.transform.parent = conteiner;
+        nBala.transform.parent = conteiner.transform;
         nBala.GetComponent<Rigidbody>().AddForce(exit.forward * forca * Time.fixedDeltaTime, ForceMode.Impulse);
         base.Spawn(nBala);
         StartCoroutine(ResetarTiro());
