@@ -24,7 +24,7 @@ public class PlayerController : NetworkBehaviour
     public int force;
     public int especialForce;
 
-    public Transform conteiner;
+    public GameObject conteiner;
     public Transform exit;
     public GameObject bullet;
     public GameObject bullet2;
@@ -60,8 +60,8 @@ public class PlayerController : NetworkBehaviour
         transform.Find("hud").gameObject.SetActive(true);
         velocidade = speedBase;
         rb = GetComponent<Rigidbody>();
-        conteiner = transform.Find("Disparo_Conteiner").GetComponent<Transform>();
-        conteiner.GetComponent<GameObject>().SetActive(true);
+        conteiner = transform.Find("Disparo_Conteiner").gameObject;
+        conteiner.SetActive(true);
         transform.Find("corpo").transform.Find("base").transform.Find("base").transform.Find("cano").Find("CameraMain").gameObject.SetActive(true);
         nc = GameObject.Find("NetworkManager").transform.Find("NetworkHudCanvas").GetComponent<NetworkHudCanvases>();
         dead = GameObject.Find("Canvas").transform.Find("dead").gameObject;
