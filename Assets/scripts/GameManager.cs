@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     string nomeUsuario;
     public static int pontos;
     int seg = 30;
-    int min = 5;
+    int min = 15;
 
     // Start is called before the first frame update
     void Start()
@@ -36,13 +36,13 @@ public class GameManager : MonoBehaviour
             Debug.Log("asdf");
         }
         nc = GameObject.Find("NetworkManager").transform.Find("NetworkHudCanvas").transform.GetComponent<NetworkHudCanvases>();
-        uName = GameObject.Find("Canvas").transform.Find("nome").GetComponent<TextMeshProUGUI>();
+        /*uName = GameObject.Find("Canvas").transform.Find("nome").GetComponent<TextMeshProUGUI>();
         points = GameObject.Find("pontos_Num").GetComponent<TextMeshProUGUI>();
         pontos = usuario_.pontos;   
         points.text = pontos.ToString();
         nomeUsuario = usuario_.nome;
         uName.text = nomeUsuario;
-        hud.GetComponent<HUDcontroller>().MostranaTela();
+        hud.GetComponent<HUDcontroller>().MostranaTela();*/
     }
 
     // Update is called once per frame
