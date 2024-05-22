@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     string nomeUsuario;
     public static int pontos;
     int seg = 30;
-    int min = 5;
+    int min = 15;
 
     // Start is called before the first frame update
     void Start()

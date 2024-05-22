@@ -56,11 +56,8 @@ public class Bullets : NetworkBehaviour
 
         if (coli.gameObject.tag == "Player")
         {
-            if (coli.transform.parent != transform.parent)
-            {
-                coli.gameObject.GetComponent<PlayerController>().Hit(coli.gameObject.GetComponent<PlayerController>().Owner, dano);
-                base.Despawn(gameObject);
-            }
+            coli.gameObject.GetComponent<PlayerController>().Hit(coli.gameObject.GetComponent<PlayerController>().Owner, dano);
+            base.Despawn(gameObject);
         }
 
         if (transform.tag == "Especial")
@@ -69,9 +66,12 @@ public class Bullets : NetworkBehaviour
         }
         else if(transform.tag == "Especial2")
         {
-            repique++;
-            if (repique >= 6)
+            rb.isKinematic = true;
+            transform.Find("Sphere").gameObject.SetActive(true);
+            StartCoroutine(bye());
+            IEnumerator bye()
             {
+                yield return new WaitForSeconds(0.2f);
                 base.Despawn(gameObject);
             }
         }

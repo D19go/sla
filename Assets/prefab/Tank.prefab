@@ -331,14 +331,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6008755162278582662}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.9961947}
-  m_LocalPosition: {x: -0.0006568448, y: 0.136, z: -0.254}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.069, z: -0.254}
   m_LocalScale: {x: 0.025400002, y: 0.025400005, z: 0.025400005}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2072796888889127809}
   m_Father: {fileID: 2517360132509473509}
-  m_LocalEulerAnglesHint: {x: 10, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &2344555319433515482
 Camera:
   m_ObjectHideFlags: 0
@@ -508,7 +508,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 100}
+  m_AnchoredPosition: {x: 0, y: -25}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3802373704091719157
@@ -539,7 +539,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 38cafe4805800954f9df08e81799a28b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cc22d1f12a5464445b01b1aa166f3225, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1049,13 +1049,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7483610451631809966}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.08715578, y: 0, z: 0, w: 0.9961947}
-  m_LocalPosition: {x: 0, y: -2.69, z: 15.57}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -2.69, z: 15.15}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5787223375159315427}
-  m_LocalEulerAnglesHint: {x: -10, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8295878350090038776
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1406,10 +1406,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tank
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: f01403bb9fe1a00459eb2b94daaffb94, type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 1515932383935645439, guid: f01403bb9fe1a00459eb2b94daaffb94, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -1549,7 +1545,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 100
   m_Drag: 0
-  m_AngularDrag: 2.5
+  m_AngularDrag: 5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1600,13 +1596,12 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 3849850935442609254}
   escudo: {fileID: 6835691769987223575}
   speedBase: 15
-  rotacaoTanque: 20
+  rotacaoTanque: 30
   torreta: {fileID: 7363439672265683787}
   canoTorreta: {fileID: 1574742507492806527}
   dead: {fileID: 0}
   force: 4000
   especialForce: 6000
-  conteiner: {fileID: 0}
   exit: {fileID: 2072796888889127809}
   bullet: {fileID: 4172265502776395161, guid: fa2ebad9f115d3640a51c551960a3112, type: 3}
   bullet2: {fileID: 5039887379889434413, guid: e38bb141d7194ed438d9b3631e497c2f, type: 3}
@@ -1666,7 +1661,7 @@ MonoBehaviour:
   _componentIndexCache: 1
   _addedNetworkObject: {fileID: 3849850935442609254}
   _networkObjectCache: {fileID: 3849850935442609254}
-  _componentConfiguration: 2
+  _componentConfiguration: 0
   _synchronizeParent: 0
   _packing:
     Position: 1

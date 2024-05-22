@@ -24,7 +24,7 @@ public class PlayerController : NetworkBehaviour
     public int force;
     public int especialForce;
 
-    public GameObject conteiner;
+    GameObject container;
     public Transform exit;
     public GameObject bullet;
     public GameObject bullet2;
@@ -33,7 +33,6 @@ public class PlayerController : NetworkBehaviour
     public GameObject especial2;
     public float timerShoot = 5f;
     bool shoot = true;
-    bool chao = true;
 
     //-------------------------------------
 
@@ -61,8 +60,8 @@ public class PlayerController : NetworkBehaviour
         transform.Find("hud").gameObject.SetActive(true);
         velocidade = speedBase;
         rb = GetComponent<Rigidbody>();
-        conteiner = GameObject.Find("Disparo_Conteiner").gameObject;
-        conteiner.SetActive(true);
+        container = GameObject.Find("Disparo_Conteiner").gameObject;
+        container.SetActive(true);
         transform.Find("corpo").transform.Find("base").transform.Find("base").transform.Find("cano").Find("CameraMain").gameObject.SetActive(true);
         nc = GameObject.Find("NetworkManager").transform.Find("NetworkHudCanvas").GetComponent<NetworkHudCanvases>();
         dead = GameObject.Find("Canvas").transform.Find("dead").gameObject;
@@ -98,7 +97,7 @@ public class PlayerController : NetworkBehaviour
         torreta.transform.Rotate(0,0,Input.GetAxis("Mouse X") * speedRotation);
         Vector3 direcaoFrente = transform.up; // Obtenha a direção para a frente com base na orientação atual do objeto
 
-
+        
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -116,7 +115,6 @@ public class PlayerController : NetworkBehaviour
         {
             transform.Rotate(0,0, rotacaoTanque * Time.fixedDeltaTime);
         }
-        
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
@@ -155,25 +153,25 @@ public class PlayerController : NetworkBehaviour
         {
             if (!b1)
             {
-                Server_AtirarRpc(base.Owner, bullet, force);
+                Server_AtirarRpc(base.Owner, bullet, force, exit);
             }
             else
             {
-                Server_AtirarRpc(base.Owner, bullet2, force);
+                Server_AtirarRpc(base.Owner, bullet2, force, exit);
             }
 
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1) && shoot)
+        if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             shoot = !shoot;   
             if (!e2)
             {
-                Server_AtirarRpc(base.Owner, especial, especialForce);
+                Server_AtirarRpc(base.Owner, especial, especialForce, exit);
 
             }else
             {
-                Server_AtirarRpc(base.Owner,especial2, especialForce);
+                Server_AtirarRpc(base.Owner,especial2, especialForce, exit);
             }
         }
     }
@@ -191,24 +189,25 @@ public class PlayerController : NetworkBehaviour
     }
 
     [ServerRpc]
-    void Server_AtirarRpc(NetworkConnection conn,GameObject prefab, int forca)
+    void Server_AtirarRpc(NetworkConnection conn,GameObject prefab, int forca, Transform exite)
     {
-        GameObject nBala = Instantiate(prefab, exit.position, exit.rotation);
-        nBala.transform.parent = conteiner.transform;
-        nBala.GetComponent<Rigidbody>().AddForce(exit.forward * forca * Time.fixedDeltaTime, ForceMode.Impulse);
+        GameObject nBala = Instantiate(prefab, exite.position, exite.rotation);
+        //
+        nBala.GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * forca * Time.fixedDeltaTime, ForceMode.Impulse);
         base.Spawn(nBala);
-        StartCoroutine(ResetarTiro());
-        IEnumerator ResetarTiro()
+        StartCoroutine(ResetarTiro(conn));
+        IEnumerator ResetarTiro(NetworkConnection co)
         {
             yield return new WaitForSeconds(timerShoot);
-            Target_Recall_Tiro(conn);
+            //Target_Recall_Tiro(co,nBala);
         }
     }
 
     [TargetRpc]
-    void Target_Recall_Tiro(NetworkConnection conn)
+    void Target_Recall_Tiro(NetworkConnection conn,GameObject nBala)
     {
-       shoot = !shoot;
+        nBala.transform.parent = container.transform;
+        shoot = !shoot;
     }
 
     IEnumerator Ataque()
@@ -263,11 +262,11 @@ public class PlayerController : NetworkBehaviour
         {
             return;
         }
-        if (other.gameObject.tag == "Coletavel")
+        /*if (other.gameObject.tag == "Coletavel")
         {
             GameManager.MudaPontos(1);
             Destroy(other.gameObject);
-        }
+        }*/
     }
 
     [TargetRpc]
