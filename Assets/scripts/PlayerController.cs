@@ -33,6 +33,7 @@ public class PlayerController : NetworkBehaviour
     public GameObject especial2;
     public float timerShoot = 5f;
     bool shoot = true;
+    bool chao = true;
 
     //-------------------------------------
 
@@ -60,7 +61,7 @@ public class PlayerController : NetworkBehaviour
         transform.Find("hud").gameObject.SetActive(true);
         velocidade = speedBase;
         rb = GetComponent<Rigidbody>();
-        conteiner = transform.Find("Disparo_Conteiner").gameObject;
+        conteiner = GameObject.Find("Disparo_Conteiner").gameObject;
         conteiner.SetActive(true);
         transform.Find("corpo").transform.Find("base").transform.Find("base").transform.Find("cano").Find("CameraMain").gameObject.SetActive(true);
         nc = GameObject.Find("NetworkManager").transform.Find("NetworkHudCanvas").GetComponent<NetworkHudCanvases>();
@@ -93,11 +94,11 @@ public class PlayerController : NetworkBehaviour
             }
         }
 
-        canoTorreta.transform.Rotate(Input.GetAxis("Mouse Y"), 0,0);
+        canoTorreta.transform.Rotate(-Input.GetAxis("Mouse Y"), 0,0);
         torreta.transform.Rotate(0,0,Input.GetAxis("Mouse X") * speedRotation);
         Vector3 direcaoFrente = transform.up; // Obtenha a direção para a frente com base na orientação atual do objeto
 
-        
+
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -115,6 +116,7 @@ public class PlayerController : NetworkBehaviour
         {
             transform.Rotate(0,0, rotacaoTanque * Time.fixedDeltaTime);
         }
+        
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
@@ -144,7 +146,7 @@ public class PlayerController : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Quaternion desiredRotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+            Quaternion desiredRotation = Quaternion.Euler(-90, transform.rotation.eulerAngles.y, 0);
             transform.rotation = desiredRotation;
 
         }

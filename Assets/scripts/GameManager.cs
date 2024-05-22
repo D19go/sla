@@ -24,25 +24,22 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(TimerEND());
+        //StartCoroutine(TimerEND());
         spawner = GameObject.Find("SpawnnerItens");
-        if (usuario_ != null)
-        {
-            spawner.GetComponent<SpawnColetavel>().ok = true;
-        }
+        
         dead = GameObject.Find("Canvas").transform.Find("dead").gameObject;
         if (dead == null)
         {
             Debug.Log("asdf");
         }
         nc = GameObject.Find("NetworkManager").transform.Find("NetworkHudCanvas").transform.GetComponent<NetworkHudCanvases>();
-        uName = GameObject.Find("Canvas").transform.Find("nome").GetComponent<TextMeshProUGUI>();
+        /*uName = GameObject.Find("Canvas").transform.Find("nome").GetComponent<TextMeshProUGUI>();
         points = GameObject.Find("pontos_Num").GetComponent<TextMeshProUGUI>();
         pontos = usuario_.pontos;   
         points.text = pontos.ToString();
         nomeUsuario = usuario_.nome;
         uName.text = nomeUsuario;
-        hud.GetComponent<HUDcontroller>().MostranaTela();
+        hud.GetComponent<HUDcontroller>().MostranaTela();*/
     }
 
     // Update is called once per frame

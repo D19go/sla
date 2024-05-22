@@ -9,6 +9,7 @@ TagManager:
   - Bullet2
   - Especial
   - Especial2
+  - chao
   layers:
   - Default
   - TransparentFX
