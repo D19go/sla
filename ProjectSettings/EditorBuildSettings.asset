@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Tela_Login.unity
     guid: 28151dd33e0806740ab67b5f11855bd5
   - enabled: 1
-    path: Assets/Scenes/SEILAA.unity
+    path: Assets/Scenes/Battle_Tanks.unity
     guid: 07e3fb0ff581b234c9b028f4608ea773
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

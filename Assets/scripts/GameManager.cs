@@ -59,7 +59,6 @@ public class GameManager : MonoBehaviour
 
         if (seg <= 0 && min <= 0)
         {
-            PlayerController.timerOVER = true;
             cTimer.GetComponentInParent<GameObject>().SetActive(false);
         }else if (seg <= 0)
         {

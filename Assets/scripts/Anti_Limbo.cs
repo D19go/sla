@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using FishNet.Example.Scened;
 using FishNet.Object;
 using UnityEngine;
 
@@ -10,7 +11,14 @@ public class Anti_Limbo : NetworkBehaviour
     {
         if (coli.gameObject.tag == "Player")
         {
-            coli.gameObject.GetComponent<PlayerController>().Reset_Transform(coli.gameObject.GetComponent<PlayerController>().Owner);
+            if (TryGetComponent<PLAYER_CTRL1>(out PLAYER_CTRL1 p1))
+            {
+                p1.Reset_Transform(coli.gameObject.GetComponent<PLAYER_CTRL1>().Owner);
+            }
+            else
+            {
+                coli.gameObject.GetComponent<PLAYER_CTRL2>().Reset_Transform(coli.gameObject.GetComponent<PLAYER_CTRL2>().Owner);
+            }
         }
     }
 }

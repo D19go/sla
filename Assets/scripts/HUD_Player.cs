@@ -25,9 +25,13 @@ public class HUD_Player : MonoBehaviour
     {
         slots1_2 = false;
         slots3_4 = false;
-        if (transform.tag == "Player")
+        if (transform.name == "Tank(Clone)")
         {
-            vidaTotal = GetComponent<PlayerController>().vida;
+            vidaTotal = GetComponent<PLAYER_CTRL1>().vida;
+        }
+        else
+        {
+            vidaTotal = GetComponent<PLAYER_CTRL2>().vida;
         }
 
         VidaAtual = vidaTotal;

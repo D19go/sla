@@ -7,9 +7,9 @@ using Unity.VisualScripting;
 using FishNet.Connection;
 using FishNet.Example;
 
-public class PlayerController : NetworkBehaviour
+public class PLAYER_CTRL2 : NetworkBehaviour
 {
-    public static bool timerOVER = false;  
+    public static bool timerOVER = false;
     float velocidade;
     public GameObject escudo;
     bool esc = false;
@@ -17,12 +17,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private int rotacaoTanque;
     [SerializeField] private GameObject torreta;
     [SerializeField] private GameObject canoTorreta;
-    [SerializeField] GameObject dead;
-
     //-------------------------------------
-
-    public int force;
-    public int especialForce;
 
     GameObject container;
     public Transform exit;
@@ -36,7 +31,6 @@ public class PlayerController : NetworkBehaviour
 
     //-------------------------------------
 
-    float rotationX = 10;
     public float speedRotation = 5f;
 
     //-------------------------------------
@@ -47,24 +41,21 @@ public class PlayerController : NetworkBehaviour
     bool cursor = false;
     Rigidbody rb;
     NetworkHudCanvases nc;
-    Vector3 rotationLocal = Vector3.zero;
-    
 
     public override void OnStartClient()
     {
         base.OnStartClient();
         if (!base.IsOwner)
         {
-            return; 
+            return;
         }
         transform.Find("hud").gameObject.SetActive(true);
         velocidade = speedBase;
         rb = GetComponent<Rigidbody>();
         container = GameObject.Find("Disparo_Conteiner").gameObject;
         container.SetActive(true);
-        transform.Find("corpo").transform.Find("base").transform.Find("base").transform.Find("cano").Find("CameraMain").gameObject.SetActive(true);
+        transform.Find("torreta").transform.Find("CanoTorreta").Find("CameraMain").gameObject.SetActive(true);
         nc = GameObject.Find("NetworkManager").transform.Find("NetworkHudCanvas").GetComponent<NetworkHudCanvases>();
-        dead = GameObject.Find("Canvas").transform.Find("dead").gameObject;
     }
 
     // Update is called once per frame
@@ -93,38 +84,39 @@ public class PlayerController : NetworkBehaviour
             }
         }
 
-        canoTorreta.transform.Rotate(-Input.GetAxis("Mouse Y"), 0,0);
-        torreta.transform.Rotate(0,0,Input.GetAxis("Mouse X") * speedRotation);
-        Vector3 direcaoFrente = transform.up; // Obtenha a direção para a frente com base na orientação atual do objeto
+        canoTorreta.transform.Rotate(-Input.GetAxis("Mouse Y"), 0, 0);
+        torreta.transform.Rotate(0, 0, Input.GetAxis("Mouse X") * speedRotation);
+        Vector3 direcaoFrente = transform.forward; // Obtenha a direção para a frente com base na orientação atual do objeto
 
-        
+
 
         if (Input.GetKey(KeyCode.W))
         {
-            rb.MovePosition(transform.position + -direcaoFrente * velocidade * Time.fixedDeltaTime);
+            rb.MovePosition(transform.position + direcaoFrente * velocidade * Time.fixedDeltaTime);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            rb.MovePosition(transform.position + direcaoFrente * velocidade * Time.fixedDeltaTime);
+            rb.MovePosition(transform.position + -direcaoFrente * velocidade * Time.fixedDeltaTime);
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(0,0, -rotacaoTanque * Time.fixedDeltaTime);
-        }else if (Input.GetKey(KeyCode.D))
+            transform.Rotate(0, -rotacaoTanque * Time.fixedDeltaTime,0);
+        }
+        else if (Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(0,0, rotacaoTanque * Time.fixedDeltaTime);
+            transform.Rotate(0, rotacaoTanque * Time.fixedDeltaTime,0);
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             velocidade *= 2;
         }
-        else if(Input.GetKeyUp(KeyCode.LeftShift))
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             velocidade = speedBase;
         }
-        
+
 
         if (Input.GetKeyDown(KeyCode.Space) && !esc)
         {
@@ -133,18 +125,18 @@ public class PlayerController : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            e2 =! e2;
+            e2 = !e2;
             GetComponent<HUD_Player>().Habilidade(2);
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            b1 =! b1;
+            b1 = !b1;
             GetComponent<HUD_Player>().Habilidade(1);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Quaternion desiredRotation = Quaternion.Euler(-90, transform.rotation.eulerAngles.y, 0);
+            Quaternion desiredRotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
             transform.rotation = desiredRotation;
 
         }
@@ -153,25 +145,26 @@ public class PlayerController : NetworkBehaviour
         {
             if (!b1)
             {
-                Server_AtirarRpc(base.Owner, bullet, force, exit);
+                Server_AtirarRpc(base.Owner, bullet);
             }
             else
             {
-                Server_AtirarRpc(base.Owner, bullet2, force, exit);
+                Server_AtirarRpc(base.Owner, bullet2);
             }
 
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            shoot = !shoot;   
+            shoot = !shoot;
             if (!e2)
             {
-                Server_AtirarRpc(base.Owner, especial, especialForce, exit);
+                Server_AtirarRpc(base.Owner, especial);
 
-            }else
+            }
+            else
             {
-                Server_AtirarRpc(base.Owner,especial2, especialForce, exit);
+                Server_AtirarRpc(base.Owner, especial2);
             }
         }
     }
@@ -189,25 +182,11 @@ public class PlayerController : NetworkBehaviour
     }
 
     [ServerRpc]
-    void Server_AtirarRpc(NetworkConnection conn,GameObject prefab, int forca, Transform exite)
+    public void Server_AtirarRpc(NetworkConnection conn, GameObject prefab)
     {
-        GameObject nBala = Instantiate(prefab, exite.position, exite.rotation);
-        //
-        nBala.GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * forca * Time.fixedDeltaTime, ForceMode.Impulse);
-        base.Spawn(nBala);
-        StartCoroutine(ResetarTiro(conn));
-        IEnumerator ResetarTiro(NetworkConnection co)
-        {
-            yield return new WaitForSeconds(timerShoot);
-            //Target_Recall_Tiro(co,nBala);
-        }
-    }
-
-    [TargetRpc]
-    void Target_Recall_Tiro(NetworkConnection conn,GameObject nBala)
-    {
-        nBala.transform.parent = container.transform;
-        shoot = !shoot;
+        GameObject nBala = Instantiate(prefab, exit.position, exit.rotation);
+        base.Spawn(nBala, conn);
+        //nBala.GetComponent<Rigidbody>().AddForce(cam.transform.forward * force * Time.fixedDeltaTime, ForceMode.Impulse);
     }
 
     IEnumerator Ataque()
@@ -236,10 +215,10 @@ public class PlayerController : NetworkBehaviour
         }
         vida -= dano;
         transform.GetComponent<HUD_Player>().Barra(dano);
-        if (vida <= 0){
+        if (vida <= 0)
+        {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            dead.SetActive(true);
             nc.OnClick_Client();
         }
     }

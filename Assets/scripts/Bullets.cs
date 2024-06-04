@@ -10,13 +10,14 @@ public class Bullets : NetworkBehaviour
     int multiplicador = 2;
     int repique = 0;
     int time = 2;
+    int force = 5000;
     
     Rigidbody rb;
 
     // Start is called before the first frame update
-    override public void OnStartServer()
+    override public void OnStartClient()
     {
-        base.OnStartServer();
+        base.OnStartClient();
         rb = GetComponent<Rigidbody>();
         if (transform.tag == "Bullet") 
         {
@@ -41,6 +42,7 @@ public class Bullets : NetworkBehaviour
             dano *= multiplicador;
         }
         
+        rb.AddForce(transform.forward * force * Time.fixedDeltaTime, ForceMode.Impulse);
     }
 
     private void OnCollisionEnter(Collision coli)
@@ -56,8 +58,14 @@ public class Bullets : NetworkBehaviour
 
         if (coli.gameObject.tag == "Player")
         {
-            coli.gameObject.GetComponent<PlayerController>().Hit(coli.gameObject.GetComponent<PlayerController>().Owner, dano);
-            base.Despawn(gameObject);
+            if (TryGetComponent<PLAYER_CTRL1>(out PLAYER_CTRL1 p1))
+            {
+                p1.Hit(coli.gameObject.GetComponent<PLAYER_CTRL2>().Owner, dano);
+            }
+            else
+            {
+                coli.gameObject.GetComponent<PLAYER_CTRL2>().Hit(coli.gameObject.GetComponent<PLAYER_CTRL2>().Owner, dano);
+            }
         }
 
         if (transform.tag == "Especial")
