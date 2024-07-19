@@ -152,25 +152,25 @@ public class PLAYER_CTRL1 : NetworkBehaviour
         {
             if (!b1)
             {
-                Server_AtirarRpc(base.Owner, bullet);
+                Server_AtirarRpc(GetComponent<PLAYER_CTRL1>().Owner, bullet);
             }
             else
             {
-                Server_AtirarRpc(base.Owner, bullet2);
+                Server_AtirarRpc(GetComponent<PLAYER_CTRL1>().Owner, bullet2);
             }
 
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            shoot = !shoot;   
+            shoot = !shoot;
             if (!e2)
             {
-                Server_AtirarRpc(base.Owner, especial);
-
-            }else
+                Server_AtirarRpc(GetComponent<PLAYER_CTRL1>().Owner, especial);
+            }
+            else
             {
-                Server_AtirarRpc(base.Owner,especial2);
+                Server_AtirarRpc(GetComponent<PLAYER_CTRL1>().Owner, especial2);
             }
         }
     }
@@ -192,7 +192,6 @@ public class PLAYER_CTRL1 : NetworkBehaviour
     {
         GameObject nBala = Instantiate(prefab, exit.position, exit.rotation);
         base.Spawn(nBala, conn);
-        //nBala.GetComponent<Rigidbody>().AddForce(cam.transform.forward * force * Time.fixedDeltaTime, ForceMode.Impulse);
     }
 
     IEnumerator Ataque()
@@ -224,7 +223,6 @@ public class PLAYER_CTRL1 : NetworkBehaviour
         if (vida <= 0){
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            nc.OnClick_Client();
         }
     }
 
@@ -251,11 +249,5 @@ public class PLAYER_CTRL1 : NetworkBehaviour
             GameManager.MudaPontos(1);
             Destroy(other.gameObject);
         }*/
-    }
-
-    [TargetRpc]
-    public void Reset_Transform(NetworkConnection conn)
-    {
-        transform.position = new Vector3(0, 2, 0);
     }
 }

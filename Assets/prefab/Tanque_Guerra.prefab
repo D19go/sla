@@ -1601,7 +1601,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 2489196696267173769}
   escudo: {fileID: 5042887865825290326}
   speedBase: 15
-  rotacaoTanque: 30
+  rotacaoTanque: 45
   torreta: {fileID: 8945486346858908865}
   canoTorreta: {fileID: 335975778831099149}
   exit: {fileID: 2101258272218098625}
@@ -1635,7 +1635,7 @@ MonoBehaviour:
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
-    Position: {x: -3.7513747, y: 0.5000005, z: 175.26265}
+    Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   _isNetworked: 1

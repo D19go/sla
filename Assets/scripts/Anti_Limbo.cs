@@ -11,14 +11,16 @@ public class Anti_Limbo : NetworkBehaviour
     {
         if (coli.gameObject.tag == "Player")
         {
-            if (TryGetComponent<PLAYER_CTRL1>(out PLAYER_CTRL1 p1))
+            coli.gameObject.transform.position = new Vector3(0, 2, 0);
+
+            /*if (coli.gameObject.TryGetComponent<PLAYER_CTRL1>(out PLAYER_CTRL1 p1))
             {
                 p1.Reset_Transform(coli.gameObject.GetComponent<PLAYER_CTRL1>().Owner);
             }
             else
             {
                 coli.gameObject.GetComponent<PLAYER_CTRL2>().Reset_Transform(coli.gameObject.GetComponent<PLAYER_CTRL2>().Owner);
-            }
+            }*/
         }
     }
 }

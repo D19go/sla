@@ -58,14 +58,15 @@ public class Bullets : NetworkBehaviour
 
         if (coli.gameObject.tag == "Player")
         {
-            if (TryGetComponent<PLAYER_CTRL1>(out PLAYER_CTRL1 p1))
+            if (coli.gameObject.TryGetComponent<PLAYER_CTRL1>(out PLAYER_CTRL1 p1))
             {
-                p1.Hit(coli.gameObject.GetComponent<PLAYER_CTRL2>().Owner, dano);
+                p1.Hit(coli.gameObject.GetComponent<PLAYER_CTRL1>().Owner, dano);
             }
             else
             {
                 coli.gameObject.GetComponent<PLAYER_CTRL2>().Hit(coli.gameObject.GetComponent<PLAYER_CTRL2>().Owner, dano);
             }
+            base.Despawn(this.gameObject);
         }
 
         if (transform.tag == "Especial")
