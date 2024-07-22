@@ -27,22 +27,22 @@ public class Lobby : MonoBehaviour
         t1 = transform.Find("1Tela").gameObject;
         t2 = transform.Find("2tela").gameObject;
         
-
-        desc_game.Add("Escola e controle um tanque e desafie seus amigos");//0
-        desc_game.Add("Um tipico jogo de tiro em primeira pessoa(fps), em um mapa grande e denso com vairas armas.");//1
-        desc_game.Add("Uma arena grande para lhe dar liberdade de luta contra seus amigos sem medo usando diversos tipos de habilidades");//2
-        desc_game.Add("Uma corrida PvP, jogador contra jogador e que vença o melhor o mais habilidoso");//3
-        desc_game.Add("Uma corrida com naves ou aviões e qualquer coisa que possa voar");//4
-        desc_game.Add("Uma corrida com um percurso gigante e sem fim");//5
-        desc_game.Add("você duelando contra seu amigo, só os dois, sem poderzinho ou mapa extenso, a boa e velha porradaria sem freio");//6
-
         name_game.Add("Battle_Tanks");//0
         name_game.Add("FPS");//1
-        name_game.Add("COMBATE MAGICO");//2
+        name_game.Add("Combate Mágico");//2
         name_game.Add("Fast");//3
         name_game.Add("Fast-Space");//4
         name_game.Add("Crazye Race");//5
         name_game.Add("1vs1");//6
+
+        desc_game.Add("Uma partida rápida de tanques contra tanques, que vença aquele que pontuar mais, cada abate é um ponto.");//0
+        desc_game.Add("Um tipico jogo de tiro em primeira pessoa(fps), em um mapa grande e denso com vairas armas.");//1
+        desc_game.Add("Magias, super força e outras habilidades especiais, independente de qual você escolher apenas seja o melhor.");//2
+        desc_game.Add("Uma corrida para até 15 jogadores, um percurso simples e divertido, onde apenas os melhores ganham.");//3
+        desc_game.Add("Voe para o além, mas sem sair do percurso da prova. Essa é uma corrida de aviões, naves e qualquer outra coisa que saia do chão.");//4
+        desc_game.Add("Carros, barcos, naves e apé, uma corrida onde apenas um veículo não dá conta, É BEM MAIS LONGA QUE OUTRAS CORRIDAS!");//5
+        desc_game.Add("Duelo direto com seu amigo, 1x1, sem dó nem piedade, essa é a mais pura porradaria.");//6
+
     }
     public void Game_Select(int listOBJ)
     {

@@ -16,7 +16,8 @@ public class SpawnColetavel : NetworkBehaviour
     override public void OnStartServer()
     {
         base.OnStartServer();
-       // InvokeRepeating("Gerador", 3, timeSpawn);
+        // InvokeRepeating("Gerador", 3, timeSpawn);
+        
     }
 
     [Server]
