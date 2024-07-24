@@ -5,9 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/Tela_Login.unity
-    guid: 28151dd33e0806740ab67b5f11855bd5
+  - enabled: 1
+    path: Assets/Scenes/Tela_Inicio.unity
+    guid: 7b32d259574cc514883e4cd1f395bc9b
   - enabled: 1
     path: Assets/Scenes/Battle_Tanks.unity
     guid: 07e3fb0ff581b234c9b028f4608ea773

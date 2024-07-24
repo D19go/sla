@@ -737,7 +737,7 @@ MonoBehaviour:
   <ComponentIndex>k__BackingField: 0
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
-  - {fileID: 0}
+  - {fileID: 5424282151561301789}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
@@ -848,6 +848,7 @@ GameObject:
   - component: {fileID: 6868136410388113955}
   - component: {fileID: 3117567919645079609}
   - component: {fileID: 5424282151561301789}
+  - component: {fileID: 2696319289668979681}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -957,6 +958,21 @@ MonoBehaviour:
   p1: {fileID: 8774147744994397720, guid: 6aff03c0ddaa2634ca68331901a8f0cf, type: 3}
   p2: {fileID: 3116682025328117885, guid: 0c1f1e64b1714734aae4d42384a44497, type: 3}
   painel: {fileID: 5285175054696999887}
+--- !u!114 &2696319289668979681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5846471000280561351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bc709aa8cb65df4992cb35a40c03e45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  min: 0
+  seg: 0
+  timer: {fileID: 1428985543471452326}
 --- !u!1 &7150197774949810649
 GameObject:
   m_ObjectHideFlags: 0
@@ -1158,7 +1174,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 00:00
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

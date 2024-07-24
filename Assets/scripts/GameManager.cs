@@ -4,6 +4,7 @@ using FishNet.Managing.Server;
 using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
@@ -13,6 +14,7 @@ using UnityEngine;
 public class GameManager : NetworkBehaviour
 {
     public List<TextMeshProUGUI> cTimer = new List<TextMeshProUGUI>();
+    public List<GameObject> clients_OBJS = new List<GameObject>();
     public static Usuario usuario_;
     GameObject dead;
     NetworkHudCanvases nc;
@@ -27,6 +29,7 @@ public class GameManager : NetworkBehaviour
     int tempoMIN;
 
     // Start is called before the first frame update
+ 
     public override void OnStartServer()
     {
         base.OnStartServer();
@@ -58,7 +61,6 @@ public class GameManager : NetworkBehaviour
         {
             return;
         }
-        cTimer.Add(GameObject.Find("client(Clone)").transform.Find("Canvas").transform.Find("timer").gameObject.GetComponent<TextMeshProUGUI>());
         
         if (timer == 0)
         {
@@ -100,8 +102,6 @@ public class GameManager : NetworkBehaviour
         {
             Debug.Log("O numero de jogadores deu erro");
         }
-        GetComponent<SyncTimer>().min.Value = tempoMIN;
-        GetComponent<SyncTimer>().seg.Value = 0;
     }
 
     void Update()
@@ -115,13 +115,12 @@ public class GameManager : NetworkBehaviour
             if (!comeco)
             {
                 comeco = true;
-                
-                GetComponent<SyncTimer>().Timer();
+
+                AtualizaTimer();
 
             }
         }
         JogadoresON = base.ServerManager.Clients.Count;
-        Debug.Log(JogadoresON);
     }
    
     public static void MudaPontos(int i)
@@ -133,32 +132,17 @@ public class GameManager : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void PlayerCount(NetworkConnection conn)
+    public void PlayerCount(NetworkConnection conn, GameObject nvJogador)
     {
-        Debug.Log("ch");
-        cTimer.Clear();
-        for (int i = 0; i < base.ServerManager.Clients.Count; i++)
-        {
-            cTimer.Add(GameObject.Find("client(Clone)").transform.Find("Canvas").transform.Find("timer").gameObject.GetComponent<TextMeshProUGUI>());
-            Debug.Log(cTimer.Count);
-        }
+        Debug.Log("chamou");
+        clients_OBJS.Add(nvJogador);
     }
 
-    public void AtualizaTimer(int min, int seg, bool timeOver)
+    public void AtualizaTimer()
     {
-        if (timeOver)
+        for (int i = 0; i < base.ServerManager.Clients.Count; ++i)
         {
-            for (int i = 0; i < base.ServerManager.Clients.Count; ++i)
-            {
-                cTimer[i].text = $"Acabou o Tempo";
-            }
-        }
-        else
-        {
-            for (int i = 0; i < base.ServerManager.Clients.Count; ++i)
-            {
-                cTimer[i].text = $"{min:D2}:{seg:D2}";
-            }
+            clients_OBJS[i].gameObject.GetComponent<SpawnPlayer>().LigaTimer(clients_OBJS[i].gameObject.GetComponent<SpawnPlayer>().Owner, tempoMIN, 0);
         }
     }
 

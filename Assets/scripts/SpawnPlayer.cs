@@ -2,6 +2,7 @@ using FishNet.Connection;
 using FishNet.Managing;
 using FishNet.Object;
 using System;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,12 +26,22 @@ public class SpawnPlayer : NetworkBehaviour
             return;
         }
         gm = GameObject.Find("GameManager");
+        if (gm !=null)
+        {
+            Debug.Log("Achou");
+        }
         cam = GameObject.Find("Camera").gameObject;
         timer = transform.Find("timer").gameObject;
         timer.SetActive(true);
     }
 
-    
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))  
+        {
+        }
+    }
+
     public void Escolha_Tank(int _p)
     {
         if (!base.IsOwner)
@@ -47,13 +58,18 @@ public class SpawnPlayer : NetworkBehaviour
         
     }
 
+    [TargetRpc]
+    public void LigaTimer(NetworkConnection conn, int minutos, int segundos)
+    {
+        GetComponent<SyncTimer>().Timer(minutos,segundos);
+
+    }
 
     [ServerRpc]
     public void Tank_Select(NetworkConnection conn, GameObject _p, Vector3 sp)
     {
         GameObject p = Instantiate(_p, sp, Quaternion.identity);
         base.Spawn(p, conn);
-        gm.GetComponent<GameManager>().PlayerCount(GetComponent<SpawnPlayer>().Owner);
-        Debug.Log("cm");
+        gm.GetComponent<GameManager>().PlayerCount(GetComponent<SpawnPlayer>().Owner, p);
     }
 }

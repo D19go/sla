@@ -7,10 +7,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Analytics;
 
-public class SyncTimer : NetworkBehaviour
+public class SyncTimer : MonoBehaviour
 {
-    public readonly SyncVar<int> min = new();
-    public readonly SyncVar<int> seg = new();
+    public int min, seg;
+    public TextMeshProUGUI timer;
     
 
     // Start is called before the first frame update
@@ -24,28 +24,28 @@ public class SyncTimer : NetworkBehaviour
 
     }
 
-    [Server]
-    public void Timer()
+    public void Timer(int minutos, int segundos)
     {
+        min = minutos;
+        seg = segundos;
         StartCoroutine(TimerEND());
-        IEnumerator TimerEND()
-        {
-            GetComponent<GameManager>().AtualizaTimer(min.Value, seg.Value, false);
-            seg.Value--;
-            yield return new WaitForSeconds(1f);
-
-            if (seg.Value <= 0 && min.Value <= 0)
-            {
-                GetComponent<GameManager>().AtualizaTimer(min.Value, seg.Value, true);
-            }
-            else if (seg.Value <= 0)
-            {
-                min.Value--;
-                seg.Value = 59;
-            }
-            StartCoroutine(TimerEND());
-        }
     }
 
-    
+    IEnumerator TimerEND()
+    {
+        timer.text = $"{min:D2}:{seg:D2}";
+        seg--;
+        yield return new WaitForSeconds(1f);
+
+        if (seg <= 0 && min <= 0)
+        {
+            timer.text = $"ACABOU O TEMPO";
+        }
+        else if (seg <= 0)
+        {
+            min--;
+            seg = 59;
+        }   
+        StartCoroutine(TimerEND());
+    }
 }
